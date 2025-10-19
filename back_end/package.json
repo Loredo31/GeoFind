@@ -1,21 +1,28 @@
 {
-  "name": "back_end",
+  "name": "renta-habitaciones-backend",
   "version": "1.0.0",
+  "description": "Backend para sistema de renta de habitaciones",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
   "dependencies": {
-    "express": "^5.1.0",
-    "mongoose": "^8.19.0",
-    "pdfkit": "^0.14.0",
-    "nodemailer": "^6.9.4"
-  }
+    "express": "^4.18.2",
+    "mongoose": "^7.5.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  },
+  "keywords": [
+    "nodejs",
+    "express",
+    "mongodb",
+    "backend"
+  ],
+  "author": "Tu nombre",
+  "license": "MIT"
 }
-

@@ -1,25 +1,149 @@
-require('dotenv').config();
+// const express = require('express');
+// const cors = require('cors');
+// const conectarDB = require('./db.conexion'); // ← Importar la conexión
+// require('dotenv').config();
+
+// const app = express();
+
+// // 1. CONECTAR A LA BASE DE DATOS ← ESTE ES EL PASO IMPORTANTE
+// conectarDB();
+
+// // Middlewares
+// app.use(cors());
+// app.use(express.json());
+// app.use(express.urlencoded({ extended: true }));
+
+// // Rutas (aquí van todas tus rutas)
+// app.use('/api/auth', require('./routes/authRoutes'));
+// app.use('/api/informacion', require('./routes/informacionRoutes'));
+// // ... las demás rutas
+
+// // Ruta de prueba para verificar la conexión
+// app.get('/api/test-db', async (req, res) => {
+//   try {
+//     // Verificar que mongoose está conectado
+//     const mongoose = require('mongoose');
+//     const estado = mongoose.connection.readyState;
+    
+//     const estados = {
+//       0: 'Desconectado',
+//       1: 'Conectado',
+//       2: 'Conectando',
+//       3: 'Desconectando'
+//     };
+    
+//     res.json({
+//       success: true,
+//       message: 'Conexión a la base de datos verificada',
+//       database: {
+//         nombre: mongoose.connection.name,
+//         host: mongoose.connection.host,
+//         estado: estados[estado],
+//         colecciones: Object.keys(mongoose.connection.collections)
+//       }
+//     });
+//   } catch (error) {
+//     res.status(500).json({
+//       success: false,
+//       message: error.message
+//     });
+//   }
+// });
+
+// // Ruta principal
+// app.get('/', (req, res) => {
+//   res.json({
+//     message: 'API de Renta de Habitaciones funcionando',
+//     version: '1.0.0',
+//     database: 'Conectada a renta_habitaciones'
+//   });
+// });
+
+// const PORT = process.env.PORT || 3000;
+
+// app.listen(PORT, () => {
+//   console.log(`🚀 Servidor corriendo en puerto ${PORT}`);
+//   console.log(`📊 Conectado a la base de datos: renta_habitaciones`);
+// });
+
+
+
+
 const express = require('express');
 const cors = require('cors');
-const connection = require('./config/db');
-
-const authRoutes = require('./routes/authRoutes');
-const houseRoutes = require('./routes/houseRoutes');
-const appointmentRoutes = require('./routes/appointmentRoutes');
-const reservationRoutes = require('./routes/reservationRoutes');
-const reviewRoutes = require('./routes/reviewRoutes');
+const conectarDB = require('./db.conexion');
+require('dotenv').config();
 
 const app = express();
-connection();
 
+// Conectar a la base de datos
+conectarDB();
+
+// Middlewares
 app.use(cors());
-app.use(express.json({ limit: '50mb' }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-app.use('/api', authRoutes);
-app.use('/api', houseRoutes);
-app.use('/api', appointmentRoutes);
-app.use('/api', reservationRoutes);
-app.use('/api', reviewRoutes);
+// Rutas TEMPORALES - sin controladores completos aún
+app.use('/api/auth', require('./app/routes/authRoutes'));
+app.use('/api/informacion', require('./app/routes/informacionRoutes'));
+app.use('/api/reservar-cuarto', require('./app/routes/reservarCuartoRoutes'));
+app.use('/api/agendar-cita', require('./app/routes/agendarCitaRoutes'));
+app.use('/api/resena', require('./app/routes/reseñaRoutes'));
+app.use('/api/datos-cliente', require('./app/routes/datosClienteRoutes'));
 
-const PORT = process.env.PORT || 3006;
-app.listen(PORT, () => console.log(`Servidor corriendo en puerto ${PORT}`));
+// Ruta de prueba para verificar conexión
+app.get('/api/test-db', async (req, res) => {
+  try {
+    const mongoose = require('mongoose');
+    const estado = mongoose.connection.readyState;
+    
+    const estados = {
+      0: 'Desconectado',
+      1: 'Conectado',
+      2: 'Conectando',
+      3: 'Desconectando'
+    };
+    
+    res.json({
+      success: true,
+      message: '✅ API funcionando correctamente',
+      database: {
+        nombre: mongoose.connection.name,
+        host: mongoose.connection.host,
+        estado: estados[estado]
+      }
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message
+    });
+  }
+});
+
+// Ruta principal
+app.get('/', (req, res) => {
+  res.json({
+    message: '🚀 API de Renta de Habitaciones funcionando',
+    version: '1.0.0',
+    endpoints: [
+      '/api/auth/login',
+      '/api/auth/register',
+      '/api/informacion',
+      '/api/reservar-cuarto',
+      '/api/agendar-cita',
+      '/api/resena',
+      '/api/datos-cliente',
+      '/api/test-db'
+    ]
+  });
+});
+
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+  console.log(`🚀 Servidor corriendo en puerto ${PORT}`);
+  console.log(`📊 Conectado a la base de datos: renta_habitaciones`);
+  console.log(`📍 Endpoints disponibles en: http://localhost:${PORT}`);
+});
