@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:front_end/models/usuario.dart';
 import '../services/auth_service.dart';
-import 'arrendador_home.dart';
-import 'arrendatario_home.dart';
+import 'arrendador/arrendador_home.dart';
+import 'arrendatario/arrendatario_home.dart';
 import 'login_screen.dart';
 
 class RegisterScreen extends StatefulWidget {

@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
-import '../models/usuario.dart';
+import '../../models/usuario.dart';
 
-class ArrendatarioHomeScreen extends StatelessWidget {
+class ArrendadorHomeScreen extends StatelessWidget {
   final Usuario usuario;
 
-  const ArrendatarioHomeScreen({Key? key, required this.usuario}) : super(key: key);
+  const ArrendadorHomeScreen({Key? key, required this.usuario}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Panel Arrendatario'),
-        backgroundColor: Colors.green[700],
+        title: const Text('Panel Arrendador'),
+        backgroundColor: Colors.blue[700],
         foregroundColor: Colors.white,
       ),
       body: Padding(
@@ -27,7 +27,7 @@ class ArrendatarioHomeScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      '¡Bienvenido, ${usuario.nombre}!',
+                      '¡Hola, ${usuario.nombre}!',
                       style: const TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
@@ -54,9 +54,9 @@ class ArrendatarioHomeScreen extends StatelessWidget {
             ),
             const SizedBox(height: 20),
 
-            // Acciones del arrendatario
+            // Acciones del arrendador
             const Text(
-              '¿Qué quieres hacer?',
+              'Acciones Disponibles:',
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
@@ -71,35 +71,35 @@ class ArrendatarioHomeScreen extends StatelessWidget {
                 mainAxisSpacing: 16,
                 children: [
                   _buildActionCard(
-                    icon: Icons.search,
-                    title: 'Buscar Habitaciones',
+                    icon: Icons.add_home,
+                    title: 'Agregar Propiedad',
+                    color: Colors.green,
+                    onTap: () {
+                      // Navegar a agregar propiedad
+                    },
+                  ),
+                  _buildActionCard(
+                    icon: Icons.list,
+                    title: 'Mis Propiedades',
                     color: Colors.blue,
                     onTap: () {
-                      // Navegar a búsqueda
+                      // Navegar a listar propiedades
                     },
                   ),
                   _buildActionCard(
-                    icon: Icons.favorite,
-                    title: 'Favoritos',
-                    color: Colors.red,
-                    onTap: () {
-                      // Navegar a favoritos
-                    },
-                  ),
-                  _buildActionCard(
-                    icon: Icons.history,
-                    title: 'Mis Solicitudes',
+                    icon: Icons.request_quote,
+                    title: 'Solicitudes',
                     color: Colors.orange,
                     onTap: () {
-                      // Navegar a historial
+                      // Navegar a solicitudes
                     },
                   ),
                   _buildActionCard(
-                    icon: Icons.person,
-                    title: 'Mi Perfil',
+                    icon: Icons.analytics,
+                    title: 'Estadísticas',
                     color: Colors.purple,
                     onTap: () {
-                      // Navegar a perfil
+                      // Navegar a estadísticas
                     },
                   ),
                 ],

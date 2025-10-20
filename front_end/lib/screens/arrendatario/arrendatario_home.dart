@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
-import '../models/usuario.dart';
+import '../../models/usuario.dart';
 
-class ArrendadorHomeScreen extends StatelessWidget {
+class ArrendatarioHomeScreen extends StatelessWidget {
   final Usuario usuario;
 
-  const ArrendadorHomeScreen({Key? key, required this.usuario}) : super(key: key);
+  const ArrendatarioHomeScreen({Key? key, required this.usuario}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Panel Arrendador'),
-        backgroundColor: Colors.blue[700],
+        title: const Text('Panel Arrendatario'),
+        backgroundColor: Colors.green[700],
         foregroundColor: Colors.white,
       ),
       body: Padding(
@@ -27,7 +27,7 @@ class ArrendadorHomeScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      '¡Hola, ${usuario.nombre}!',
+                      '¡Bienvenido, ${usuario.nombre}!',
                       style: const TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
@@ -54,9 +54,9 @@ class ArrendadorHomeScreen extends StatelessWidget {
             ),
             const SizedBox(height: 20),
 
-            // Acciones del arrendador
+            // Acciones del arrendatario
             const Text(
-              'Acciones Disponibles:',
+              '¿Qué quieres hacer?',
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
@@ -71,35 +71,35 @@ class ArrendadorHomeScreen extends StatelessWidget {
                 mainAxisSpacing: 16,
                 children: [
                   _buildActionCard(
-                    icon: Icons.add_home,
-                    title: 'Agregar Propiedad',
-                    color: Colors.green,
-                    onTap: () {
-                      // Navegar a agregar propiedad
-                    },
-                  ),
-                  _buildActionCard(
-                    icon: Icons.list,
-                    title: 'Mis Propiedades',
+                    icon: Icons.search,
+                    title: 'Buscar Habitaciones',
                     color: Colors.blue,
                     onTap: () {
-                      // Navegar a listar propiedades
+                      // Navegar a búsqueda
                     },
                   ),
                   _buildActionCard(
-                    icon: Icons.request_quote,
-                    title: 'Solicitudes',
+                    icon: Icons.favorite,
+                    title: 'Favoritos',
+                    color: Colors.red,
+                    onTap: () {
+                      // Navegar a favoritos
+                    },
+                  ),
+                  _buildActionCard(
+                    icon: Icons.history,
+                    title: 'Mis Solicitudes',
                     color: Colors.orange,
                     onTap: () {
-                      // Navegar a solicitudes
+                      // Navegar a historial
                     },
                   ),
                   _buildActionCard(
-                    icon: Icons.analytics,
-                    title: 'Estadísticas',
+                    icon: Icons.person,
+                    title: 'Mi Perfil',
                     color: Colors.purple,
                     onTap: () {
-                      // Navegar a estadísticas
+                      // Navegar a perfil
                     },
                   ),
                 ],
