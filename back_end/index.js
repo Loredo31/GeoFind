@@ -13,6 +13,7 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+
 // Rutas TEMPORALES - sin controladores completos aún
 app.use('/api/auth', require('./app/routes/authRoutes'));
 app.use('/api/informacion', require('./app/routes/informacionRoutes'));

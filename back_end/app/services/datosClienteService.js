@@ -43,6 +43,32 @@ class DatosClienteService {
       throw new Error(`Error al obtener usuarios: ${error.message}`);
     }
   }
+
+
+ async loginUsuario(credenciales) {
+  try {
+    const { email, password } = credenciales;
+
+    // Buscar usuario por email
+    const usuario = await Usuario.findOne({ email });
+    
+    if (!usuario) {
+      throw new Error('Usuario no encontrado');
+    }
+
+    // Verificar contraseña (sin encriptar por ahora)
+    if (usuario.password !== password) {
+      throw new Error('Contraseña incorrecta');
+    }
+
+    // Devolver usuario sin password
+    const { password: _, ...usuarioSinPassword } = usuario.toObject();
+    return usuarioSinPassword;
+
+  } catch (error) {
+    throw new Error(`Error en login: ${error.message}`);
+  }
+}
 }
 
 module.exports = new DatosClienteService();
