@@ -19,8 +19,8 @@ const usuarioSchema = new mongoose.Schema({
     enum: ['arrendador', 'arrendatario'],
     required: true
   },
-  telefono: String,
-  direccion: String,
+  // telefono: String,
+  // direccion: String,
   fechaRegistro: {
     type: Date,
     default: Date.now
