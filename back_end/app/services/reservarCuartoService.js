@@ -24,7 +24,7 @@ class ReservarCuartoService {
 
   async obtenerReservasPorArrendatario(arrendatarioId) {
     try {
-      return await ReservarCuarto.find({ arrendatarioId }).populate('habitacionId');
+      return await ReservarCuarto.find({ arrendatarioId });
     } catch (error) {
       throw new Error(`Error al obtener reservas: ${error.message}`);
     }

@@ -12,7 +12,7 @@ class ReseñaService {
 
   async obtenerReseñasPorHabitacion(habitacionId) {
     try {
-      return await Reseña.find({ habitacionId }).populate('usuarioId', 'nombre');
+      return await Reseña.find({ habitacionId });
     } catch (error) {
       throw new Error(`Error al obtener reseñas: ${error.message}`);
     }
@@ -20,7 +20,7 @@ class ReseñaService {
 
   async obtenerTodasLasReseñas() {
     try {
-      return await Reseña.find().populate('usuarioId', 'nombre').populate('habitacionId');
+      return await Reseña.find();
     } catch (error) {
       throw new Error(`Error al obtener reseñas: ${error.message}`);
     }

@@ -12,7 +12,7 @@ class AgendarCitaService {
 
   async obtenerCitasPorArrendador(habitacionId) {
     try {
-      return await AgendarCita.find({ habitacionId }).populate('arrendatarioId', 'nombre email');
+      return await AgendarCita.find({ habitacionId });
     } catch (error) {
       throw new Error(`Error al obtener citas: ${error.message}`);
     }
@@ -20,7 +20,7 @@ class AgendarCitaService {
 
   async obtenerCitasPorArrendatario(arrendatarioId) {
     try {
-      return await AgendarCita.find({ arrendatarioId }).populate('habitacionId');
+      return await AgendarCita.find({ arrendatarioId });
     } catch (error) {
       throw new Error(`Error al obtener citas: ${error.message}`);
     }

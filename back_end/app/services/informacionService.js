@@ -20,7 +20,7 @@ class InformacionService {
 
   async obtenerTodasLasHabitaciones() {
     try {
-      return await Informacion.find().populate('arrendadorId', 'nombre email');
+      return await Informacion.find();
     } catch (error) {
       throw new Error(`Error al obtener habitaciones: ${error.message}`);
     }
