@@ -66,7 +66,7 @@ class DatosClienteService {
     return usuarioSinPassword;
 
   } catch (error) {
-    throw new Error(`Error en login: ${error.message}`);
+    throw new Error(`Error ${error.message}`);
   }
 }
 }
