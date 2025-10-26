@@ -11,7 +11,7 @@ class SearchFilterWidget extends StatefulWidget {
 }
 
 class _SearchFilterWidgetState extends State<SearchFilterWidget> {
-  final List<String> _zonas = ['Todas', 'Norte', 'Sur', 'Centro'];
+  final List<String> _zonas = ['Todas', 'norte', 'sur', 'centro'];
   final List<String> _servicios = [
     'WiFi',
     'Agua',

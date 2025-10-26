@@ -10,8 +10,18 @@ conectarDB();
 
 // Middlewares
 app.use(cors());
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+//app.use(express.json());
+//app.use(express.urlencoded({ extended: true }));
+app.use(express.json({ 
+  limit: '50mb', // Aumenta el límite a 50MB
+  parameterLimit: 100000 // Aumenta el límite de parámetros
+}));
+
+app.use(express.urlencoded({ 
+  limit: '50mb',
+  extended: true,
+  parameterLimit: 100000
+}));
 
 
 // Rutas TEMPORALES - sin controladores completos aún
