@@ -607,11 +607,11 @@ class _ArrendatarioHomeState extends State<ArrendatarioHome> {
         }
       }
 
-      if (filtros['tipoCuarto'] != null && 
-          filtros['tipoCuarto'].isNotEmpty && 
-          habitacion['tipoCuarto'] != null) {
-        final tipoHabitacion = habitacion['tipoCuarto'].toString().toLowerCase();
-        final tipoFiltro = filtros['tipoCuarto'].toString().toLowerCase();
+      if (filtros['tipo'] != null && 
+          filtros['tipo'].isNotEmpty && 
+          habitacion['tipo'] != null) {
+        final tipoHabitacion = habitacion['tipo'].toString().toLowerCase();
+        final tipoFiltro = filtros['tipo'].toString().toLowerCase();
         if (tipoHabitacion != tipoFiltro) {
           return false;
         }
@@ -640,7 +640,7 @@ class _ArrendatarioHomeState extends State<ArrendatarioHome> {
     }).toList();
   }
 
-  // CAMBIO PRINCIPAL: Navegar a la pantalla de detalles en lugar de mostrar modal
+ 
   void _mostrarDetallesHabitacion(Map<String, dynamic> habitacion) {
     Navigator.push(
       context,
@@ -851,7 +851,7 @@ class _ArrendatarioHomeState extends State<ArrendatarioHome> {
         'direccionVivienda': direccionVivienda,
         'curp': curp,
         'direccionHabitacion': habitacion['zona'],
-        'tipoHabitacion': habitacion['tipoCuarto'],
+        'tipoHabitacion': habitacion['tipo'],
         'duracion': duracion,
         'costo': habitacion['costo'],
         'nombreArrendador': habitacion['nombreArrendador'] ?? 'No especificado',

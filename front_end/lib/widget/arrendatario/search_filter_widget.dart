@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../arrendador/services_checkbox_group.dart';
+
 class SearchFilterWidget extends StatefulWidget {
   final Function(Map<String, dynamic>) onFiltersChanged;
 
@@ -20,7 +22,7 @@ class _SearchFilterWidgetState extends State<SearchFilterWidget> {
     'Lavandería',
     'Parqueadero',
   ];
-  final List<String> _tiposCuarto = ['Todos', 'Individual', 'Compartido'];
+  final List<String> _tiposCuarto = ['Todos', 'individual', 'compartido'];
 
   final List<int> _precios = [
     1000,
@@ -38,28 +40,17 @@ class _SearchFilterWidgetState extends State<SearchFilterWidget> {
   String _tipoCuartoSeleccionado = 'Todos';
   int? _precioMinSeleccionado;
   int? _precioMaxSeleccionado;
-  final Map<String, bool> _serviciosSeleccionados = {};
-
-  @override
-  void initState() {
-    super.initState();
-    for (var servicio in _servicios) {
-      _serviciosSeleccionados[servicio] = false;
-    }
-  }
+  List<String> _serviciosSeleccionados = []; // Cambiado a List<String>
 
   void _aplicarFiltros() {
     final filtros = {
       'zona': _zonaSeleccionada == 'Todas' ? null : _zonaSeleccionada,
-      'tipoCuarto': _tipoCuartoSeleccionado == 'Todos'
+      'tipo': _tipoCuartoSeleccionado == 'Todos'
           ? null
           : _tipoCuartoSeleccionado,
       'precioMin': _precioMinSeleccionado,
       'precioMax': _precioMaxSeleccionado,
-      'servicios': _serviciosSeleccionados.entries
-          .where((entry) => entry.value)
-          .map((entry) => entry.key)
-          .toList(),
+      'servicios': _serviciosSeleccionados,
     };
     widget.onFiltersChanged(filtros);
   }
@@ -70,7 +61,7 @@ class _SearchFilterWidgetState extends State<SearchFilterWidget> {
     String tipoCuartoTemp = _tipoCuartoSeleccionado;
     int? precioMinTemp = _precioMinSeleccionado;
     int? precioMaxTemp = _precioMaxSeleccionado;
-    Map<String, bool> serviciosTemp = Map.from(_serviciosSeleccionados);
+    List<String> serviciosTemp = List.from(_serviciosSeleccionados); // Cambiado a List<String>
 
     showDialog(
       context: context,
@@ -208,7 +199,6 @@ class _SearchFilterWidgetState extends State<SearchFilterWidget> {
                                 const SizedBox(height: 8),
 
                                 // Mostrar mensaje si hay error
-                                //if (precioMinTemp != null && precioMaxTemp != null && precioMinTemp >= precioMaxTemp)
                                 if (precioMinTemp != null &&
                                     precioMaxTemp != null &&
                                     precioMinTemp! >= precioMaxTemp!)
@@ -236,76 +226,18 @@ class _SearchFilterWidgetState extends State<SearchFilterWidget> {
                           ),
 
                           const SizedBox(height: 20),
-
-                          // Filtro de Servicios (DISEÑO SIMPLIFICADO Y ELEGANTE)
+                          
+                          // Filtro de Servicios usando ServicesCheckboxGroup
                           _buildFilterSection(
                             'Servicios Incluidos',
                             Icons.room_service,
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                // Contador simple
-                                Padding(
-                                  padding: const EdgeInsets.only(bottom: 16),
-                                  child: Text(
-                                    'Selecciona los servicios que necesitas',
-                                    style: TextStyle(
-                                      color: Colors.grey[700],
-                                      fontSize: 14,
-                                    ),
-                                  ),
-                                ),
-
-                                // Lista simple de checkboxes
-                                Column(
-                                  children: _servicios.map((servicio) {
-                                    return _buildServicioSimple(
-                                      servicio,
-                                      serviciosTemp[servicio]!,
-                                      (value) {
-                                        setDialogState(() {
-                                          serviciosTemp[servicio] = value!;
-                                        });
-                                      },
-                                    );
-                                  }).toList(),
-                                ),
-
-                                // Botón simple para seleccionar/deseleccionar todos
-                                const SizedBox(height: 16),
-                                Container(
-                                  width: double.infinity,
-                                  child: TextButton(
-                                    onPressed: () {
-                                      setDialogState(() {
-                                        bool todosSeleccionados = serviciosTemp
-                                            .entries
-                                            .every((entry) => entry.value);
-                                        for (var servicio in _servicios) {
-                                          serviciosTemp[servicio] =
-                                              !todosSeleccionados;
-                                        }
-                                      });
-                                    },
-                                    style: TextButton.styleFrom(
-                                      foregroundColor: Colors.green[700],
-                                      padding: const EdgeInsets.symmetric(
-                                        vertical: 12,
-                                      ),
-                                    ),
-                                    child: Text(
-                                      serviciosTemp.entries.every(
-                                            (entry) => entry.value,
-                                          )
-                                          ? 'Deseleccionar todos'
-                                          : 'Seleccionar todos',
-                                      style: const TextStyle(
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
+                            ServicesCheckboxGroup(
+                              selectedServices: serviciosTemp,
+                              onServicesChanged: (List<String> updatedServices) {
+                                setDialogState(() {
+                                  serviciosTemp = updatedServices;
+                                });
+                              },
                             ),
                           ),
                         ],
@@ -326,9 +258,7 @@ class _SearchFilterWidgetState extends State<SearchFilterWidget> {
                               tipoCuartoTemp = 'Todos';
                               precioMinTemp = null;
                               precioMaxTemp = null;
-                              for (var servicio in _servicios) {
-                                serviciosTemp[servicio] = false;
-                              }
+                              serviciosTemp.clear(); // Limpiar servicios
                             });
                           },
                           style: OutlinedButton.styleFrom(
@@ -368,8 +298,7 @@ class _SearchFilterWidgetState extends State<SearchFilterWidget> {
                               _tipoCuartoSeleccionado = tipoCuartoTemp;
                               _precioMinSeleccionado = precioMinTemp;
                               _precioMaxSeleccionado = precioMaxTemp;
-                              _serviciosSeleccionados.clear();
-                              _serviciosSeleccionados.addAll(serviciosTemp);
+                              _serviciosSeleccionados = serviciosTemp;
                             });
                             _aplicarFiltros();
                             Navigator.pop(context);
@@ -481,40 +410,6 @@ class _SearchFilterWidgetState extends State<SearchFilterWidget> {
           icon: Icon(Icons.arrow_drop_down, color: Colors.green[700]),
         ),
       ],
-    );
-  }
-
-  // DISEÑO SIMPLE Y ELEGANTE para servicios
-  Widget _buildServicioSimple(
-    String servicio,
-    bool isSelected,
-    ValueChanged<bool?> onChanged,
-  ) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 8),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8),
-        color: isSelected ? Colors.green[50] : null,
-      ),
-      child: ListTile(
-        contentPadding: const EdgeInsets.symmetric(horizontal: 8),
-        leading: Checkbox(
-          value: isSelected,
-          onChanged: onChanged,
-          activeColor: Colors.green[700],
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
-        ),
-        title: Text(
-          servicio,
-          style: TextStyle(
-            color: Colors.grey[800],
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-        onTap: () {
-          onChanged(!isSelected);
-        },
-      ),
     );
   }
 
