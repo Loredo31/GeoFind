@@ -52,7 +52,8 @@ class ReservarCuartoService {
   }
 
   // Actualizar estado de reserva - PUT /api/reservar-cuarto/:id/estado
-  static Future<Map<String, dynamic>> actualizarEstadoReserva(String reservaId, String estado) async {
+  //static Future<Map<String, dynamic>> actualizarEstadoReserva(String reservaId, String estado) async {
+  static Future<Map<String, dynamic>> actualizarEstadoReserva(String reservaId, bool estado) async {
     try {
       final response = await http.put(
         Uri.parse('$baseUrl/$reservaId/estado'),

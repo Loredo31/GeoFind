@@ -35,7 +35,7 @@ class WelcomeCardArre extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        '¡Bienvenido, ${usuario.nombre}!',
+                        '¡Bienvenido/a, ${usuario.nombre}!',
                         style: const TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,

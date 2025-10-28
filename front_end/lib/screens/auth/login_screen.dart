@@ -126,7 +126,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     TextFormField(
                       controller: _emailController,
                       decoration: InputDecoration(
-                        labelText: 'Email',
+                        labelText: 'Gmail',
                         labelStyle: TextStyle(color: Colors.green[800]),
                         prefixIcon: Icon(Icons.email, color: Colors.green[700]),
                         border: OutlineInputBorder(
@@ -143,10 +143,10 @@ class _LoginScreenState extends State<LoginScreen> {
                       keyboardType: TextInputType.emailAddress,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Por favor ingresa tu email';
+                          return 'Por favor ingresa tu gmail';
                         }
                         if (!value.contains('@')) {
-                          return 'Ingresa un email válido';
+                          return 'Ingresa un gmail válido';
                         }
                         return null;
                       },

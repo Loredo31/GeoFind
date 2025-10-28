@@ -153,15 +153,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     // Campo Email
                     CustomTextField(
                       controller: _emailController,
-                      labelText: 'Email',
+                      labelText: 'Gmail',
                       prefixIcon: Icons.email,
                       keyboardType: TextInputType.emailAddress,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Por favor ingresa tu email';
+                          return 'Por favor ingresa tu gmail';
                         }
                         if (!value.contains('@')) {
-                          return 'Ingresa un email válido';
+                          return 'Ingresa un gmail válido';
                         }
                         return null;
                       },

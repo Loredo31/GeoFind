@@ -151,8 +151,6 @@ class _RegistrarCuartoState extends State<RegistrarCuarto> {
 
       if (response['success'] == true) {
         _mostrarExito('Habitación registrada exitosamente');
-        _limpiarFormulario();
-        Navigator.pop(context);
       } else {
         _mostrarError(response['message'] ?? 'Error al registrar la habitación');
       }
@@ -189,6 +187,9 @@ class _RegistrarCuartoState extends State<RegistrarCuarto> {
         duration: const Duration(seconds: 3),
       ),
     );
+    
+    // Regresar a la pantalla anterior con resultado true
+    Navigator.pop(context, true);
   }
 
   void _mostrarError(String mensaje) {
@@ -240,15 +241,91 @@ class _RegistrarCuartoState extends State<RegistrarCuarto> {
     return Scaffold(
       backgroundColor: Colors.green[50],
       appBar: AppBar(
-        title: const Text('Registrar Nueva Habitación'),
+        toolbarHeight: 80, // Más ancha como las otras pantallas
+        title: Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.2),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Icon(
+                Icons.add_home_work, // Icono más específico para registrar habitación
+                color: Colors.white,
+                size: 20,
+              ),
+            ),
+            const SizedBox(width: 12),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Registrar Habitación',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white,
+                  ),
+                ),
+                Text(
+                  'Nueva propiedad',
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w400,
+                    color: Colors.white.withOpacity(0.8),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
         backgroundColor: Colors.green[700],
         foregroundColor: Colors.white,
-        elevation: 0,
+        elevation: 4,
+        shadowColor: Colors.green[800]?.withOpacity(0.5),
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(16),
+            bottomRight: Radius.circular(16),
+          ),
+        ),
         actions: [
-          IconButton(
-            icon: const Icon(Icons.cleaning_services),
-            onPressed: _limpiarFormulario,
-            tooltip: 'Limpiar formulario',
+          // Botón de limpiar con diseño mejorado
+          Container(
+            margin: const EdgeInsets.only(right: 8),
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(0.15),
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(
+                color: Colors.white.withOpacity(0.3),
+                width: 1,
+              ),
+            ),
+            child: IconButton(
+              icon: const Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(Icons.cleaning_services, size: 18),
+                  SizedBox(width: 4),
+                  Text(
+                    'Limpiar',
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Colors.white,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
+              ),
+              onPressed: _limpiarFormulario,
+              tooltip: 'Limpiar formulario',
+              style: IconButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+            ),
           ),
         ],
       ),
@@ -318,7 +395,7 @@ class _RegistrarCuartoState extends State<RegistrarCuarto> {
                             controller: _direccionController,
                             labelText: 'Dirección completa',
                             prefixIcon: Icons.home,
-                            maxLines: 2,
+                            //maxLines: 2,
                             validator: (value) => _validarRequerido(value, 'la dirección'),
                           ),
 
@@ -479,12 +556,12 @@ class _RegistrarCuartoState extends State<RegistrarCuarto> {
                       Icons.description,
                       Column(
                         children: [
-                          CustomFormField(
-                            controller: _clausulasController,
-                            labelText: 'Cláusulas (opcional)',
-                            prefixIcon: Icons.description,
-                            maxLines: 3,
-                          ),
+                          // CustomFormField(
+                          //   controller: _clausulasController,
+                          //   labelText: 'Cláusulas (opcional)',
+                          //   prefixIcon: Icons.description,
+                          //   //maxLines: 3,
+                          // ),
                           CustomFormField(
                             controller: _googleMapsController,
                             labelText: 'Enlace de Google Maps (opcional)',
@@ -536,7 +613,7 @@ class _RegistrarCuartoState extends State<RegistrarCuarto> {
                       children: [
                         Expanded(
                           child: OutlinedButton(
-                            onPressed: _isLoading ? null : () => Navigator.pop(context),
+                            onPressed: _isLoading ? null : () => Navigator.pop(context, false),
                             style: OutlinedButton.styleFrom(
                               foregroundColor: Colors.green[700],
                               side: BorderSide(color: Colors.green[700]!),

@@ -30,7 +30,8 @@ const agendarCitaSchema = new mongoose.Schema({
   fechaSolicitud: {
     type: Date,
     default: Date.now
-  }
+  },
+  direccionHabitacion: String,
 });
 
 module.exports = mongoose.model('AgendarCita', agendarCitaSchema);

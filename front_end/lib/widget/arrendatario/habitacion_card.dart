@@ -15,9 +15,7 @@ class HabitacionCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       elevation: 4,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(12),
@@ -28,10 +26,8 @@ class HabitacionCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Imagen de la habitación - MODIFICADO para usar fotografias
-              Expanded(
-                child: _buildImagenHabitacion(),
-              ),
-              
+              Expanded(child: _buildImagenHabitacion()),
+
               // Información de la habitación
               Padding(
                 padding: const EdgeInsets.all(8),
@@ -50,11 +46,15 @@ class HabitacionCard extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                     ),
                     const SizedBox(height: 4),
-                    
+
                     // Zona
                     Row(
                       children: [
-                        Icon(Icons.location_on, size: 12, color: Colors.grey[600]),
+                        Icon(
+                          Icons.location_on,
+                          size: 12,
+                          color: Colors.grey[600],
+                        ),
                         const SizedBox(width: 2),
                         Expanded(
                           child: Text(
@@ -70,7 +70,7 @@ class HabitacionCard extends StatelessWidget {
                       ],
                     ),
                     const SizedBox(height: 2),
-                    
+
                     // Tipo y capacidad
                     Row(
                       children: [
@@ -89,21 +89,27 @@ class HabitacionCard extends StatelessWidget {
                         ),
                       ],
                     ),
-                    
+
                     // Servicios (si existen) - Solo mostrar si hay espacio
-                    if (habitacion['servicios'] != null && 
+                    if (habitacion['servicios'] != null &&
                         (habitacion['servicios'] as List).isNotEmpty)
                       Container(
                         margin: const EdgeInsets.only(top: 4),
                         height: 20,
                         child: ListView.builder(
                           scrollDirection: Axis.horizontal,
-                          itemCount: (habitacion['servicios'] as List).take(1).length,
+                          itemCount: (habitacion['servicios'] as List)
+                              .take(1)
+                              .length,
                           itemBuilder: (context, index) {
-                            final servicio = (habitacion['servicios'] as List)[index];
+                            final servicio =
+                                (habitacion['servicios'] as List)[index];
                             return Container(
                               margin: const EdgeInsets.only(right: 4),
-                              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 6,
+                                vertical: 2,
+                              ),
                               decoration: BoxDecoration(
                                 color: Colors.green[50],
                                 borderRadius: BorderRadius.circular(8),
@@ -137,16 +143,16 @@ class HabitacionCard extends StatelessWidget {
   Widget _buildImagenHabitacion() {
     final fotografias = habitacion['fotografias'];
     String? imageData;
-    
+
     // Obtener la primera imagen del array fotografias
     if (fotografias is List && fotografias.isNotEmpty) {
       imageData = fotografias.first.toString();
     } else if (fotografias is String) {
       imageData = fotografias;
     }
-    
+
     ImageProvider imageProvider;
-    
+
     if (imageData == null || imageData.isEmpty) {
       // Si no hay imagen, mostrar placeholder
       return Container(
@@ -161,11 +167,7 @@ class HabitacionCard extends StatelessWidget {
         child: Stack(
           children: [
             Center(
-              child: Icon(
-                Icons.home_work,
-                size: 40,
-                color: Colors.green[300],
-              ),
+              child: Icon(Icons.home_work, size: 40, color: Colors.green[300]),
             ),
             // Badge de tipo de cuarto
             Positioned(
@@ -217,7 +219,8 @@ class HabitacionCard extends StatelessWidget {
           ),
           image: DecorationImage(
             image: imageProvider,
-            fit: BoxFit.cover, // La imagen se ajusta para cubrir todo el espacio
+            fit:
+                BoxFit.cover, // La imagen se ajusta para cubrir todo el espacio
           ),
         ),
         child: Stack(
@@ -267,10 +270,7 @@ class HabitacionCard extends StatelessWidget {
                   const SizedBox(height: 4),
                   Text(
                     'Error imagen',
-                    style: TextStyle(
-                      color: Colors.red,
-                      fontSize: 9,
-                    ),
+                    style: TextStyle(color: Colors.red, fontSize: 9),
                   ),
                 ],
               ),
@@ -301,30 +301,30 @@ class HabitacionCard extends StatelessWidget {
     }
   }
 
- String _getTipoText(Map<String, dynamic> habitacion) {
-  final tipo = habitacion['tipo']?.toString().toLowerCase() ?? 'individual';
-  final capacidad = habitacion['capacidad']?.toString() ?? '';
-  
-  if (tipo == 'individual') {
-    return 'Individual';
-  } else if (tipo == 'compartido' || tipo == 'compartida') {
-    return capacidad.isNotEmpty ? 'Compartido ($capacidad)' : 'Compartido';
-  } else {
-    // Por si acaso llega algún otro valor inesperado
-    return tipo;
-  }
-}
+  String _getTipoText(Map<String, dynamic> habitacion) {
+    final tipo = habitacion['tipo']?.toString().toLowerCase() ?? 'individual';
+    final capacidad = habitacion['capacidad']?.toString() ?? '';
 
-String _getTipoAbreviado(String? tipo) {
-  if (tipo == null) return 'Ind';
-  
-  final tipoLower = tipo.toLowerCase();
-  if (tipoLower == 'individual') {
-    return 'Ind';
-  } else if (tipoLower == 'compartido' || tipoLower == 'compartida') {
-    return 'Cmp';
-  } else {
-    return 'Ind'; // Valor por defecto
+    if (tipo == 'individual') {
+      return 'Individual';
+    } else if (tipo == 'compartido' || tipo == 'compartida') {
+      return capacidad.isNotEmpty ? 'Compartido ($capacidad)' : 'Compartido';
+    } else {
+      // Por si acaso llega algún otro valor inesperado
+      return tipo;
+    }
   }
-}
+
+  String _getTipoAbreviado(String? tipo) {
+    if (tipo == null) return 'Ind';
+
+    final tipoLower = tipo.toLowerCase();
+    if (tipoLower == 'individual') {
+      return 'Ind';
+    } else if (tipoLower == 'compartido' || tipoLower == 'compartida') {
+      return 'Cmp';
+    } else {
+      return 'Ind'; // Valor por defecto
+    }
+  }
 }

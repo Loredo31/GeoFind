@@ -52,18 +52,45 @@ class CitaService {
   }
 
   // Actualizar estado de cita - PUT /api/agendar-cita/:id/estado
-  static Future<Map<String, dynamic>> actualizarEstadoCita(String citaId, String estado) async {
-    try {
-      final response = await http.put(
-        Uri.parse('$baseUrl/$citaId/estado'),
-        headers: {'Content-Type': 'application/json'},
-        body: json.encode({'estado': estado}),
-      );
+//   static Future<Map<String, dynamic>> actualizarEstadoCita(String citaId, String estado) async {
+//     try {
+//       final response = await http.put(
+//         Uri.parse('$baseUrl/$citaId/estado'),
+//         headers: {'Content-Type': 'application/json'},
+//         body: json.encode({'estado': estado}),
+//       );
 
-      final data = json.decode(response.body);
-      return data;
-    } catch (error) {
-      throw Exception('Error al actualizar estado de cita: $error');
+//       final data = json.decode(response.body);
+//       return data;
+//     } catch (error) {
+//       throw Exception('Error al actualizar estado de cita: $error');
+//     }
+//   }
+// }
+
+
+
+static Future<Map<String, dynamic>> actualizarEstadoCita(String citaId, bool estado) async {
+  try {
+    final response = await http.put(
+      Uri.parse('$baseUrl/$citaId/estado'),
+      headers: {'Content-Type': 'application/json'},
+      body: json.encode({'estado': estado}), // Aquí se envía el bool correctamente
+    );
+
+    if (response.statusCode == 200) {
+      return json.decode(response.body);
+    } else {
+      return {
+        'success': false,
+        'message': 'Error al actualizar cita: ${response.statusCode}'
+      };
     }
+  } catch (error) {
+    return {
+      'success': false,
+      'message': 'Error de conexión: $error'
+    };
   }
+}
 }
