@@ -2,19 +2,15 @@ const express = require('express');
 const router = express.Router();
 const InformacionController = require('../controllers/informacionController');
 
-// Crear información de habitación
+// crear habitación
 router.post('/', InformacionController.crearInformacion);
-
-// Obtener información por arrendador
+// obtener información arrendador
 router.get('/arrendador/:arrendadorId', InformacionController.obtenerInformacionArrendador);
-
-// Obtener todas las habitaciones
+// obtener habitaciones
 router.get('/', InformacionController.obtenerTodasLasHabitaciones);
-
-// Actualizar información
+// actualizar 
 router.put('/:id', InformacionController.actualizarInformacion);
-
-// Eliminar información
+// eliminar
 router.delete('/:id', InformacionController.eliminarInformacion);
 
 module.exports = router;

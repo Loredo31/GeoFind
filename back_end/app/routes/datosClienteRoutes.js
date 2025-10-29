@@ -2,13 +2,11 @@ const express = require('express');
 const router = express.Router();
 const DatosClienteController = require('../controllers/datosClienteController');
 
-// Obtener usuario por ID
+// obtener usuario ID
 router.get('/:id', DatosClienteController.obtenerUsuario);
-
-// Actualizar usuario
+// actualizar
 router.put('/:id', DatosClienteController.actualizarUsuario);
-
-// Obtener usuarios por rol
+// Obtener rol
 router.get('/rol/:rol', DatosClienteController.obtenerUsuariosPorRol);
 
 module.exports = router;

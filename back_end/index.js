@@ -5,16 +5,12 @@ require('dotenv').config();
 
 const app = express();
 
-// Conectar a la base de datos
 conectarDB();
 
-// Middlewares
 app.use(cors());
-//app.use(express.json());
-//app.use(express.urlencoded({ extended: true }));
 app.use(express.json({ 
-  limit: '50mb', // Aumenta el límite a 50MB
-  parameterLimit: 100000 // Aumenta el límite de parámetros
+  limit: '50mb', 
+  parameterLimit: 100000 
 }));
 
 app.use(express.urlencoded({ 
@@ -24,7 +20,7 @@ app.use(express.urlencoded({
 }));
 
 
-// Rutas TEMPORALES - sin controladores completos aún
+// Rutas 
 app.use('/api/auth', require('./app/routes/authRoutes'));
 app.use('/api/informacion', require('./app/routes/informacionRoutes'));
 app.use('/api/reservar-cuarto', require('./app/routes/reservarCuartoRoutes'));
@@ -32,7 +28,6 @@ app.use('/api/agendar-cita', require('./app/routes/agendarCitaRoutes'));
 app.use('/api/resena', require('./app/routes/reseñaRoutes'));
 app.use('/api/datos-cliente', require('./app/routes/datosClienteRoutes'));
 
-// Ruta de prueba para verificar conexión
 app.get('/api/test-db', async (req, res) => {
   try {
     const mongoose = require('mongoose');

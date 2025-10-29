@@ -136,7 +136,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       subtitle: 'Completa tus datos para registrarte',
                     ),
 
-                    // Campo Nombre
                     CustomTextField(
                       controller: _nombreController,
                       labelText: 'Nombre Completo',
@@ -150,7 +149,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                     const SizedBox(height: 16),
 
-                    // Campo Email
                     CustomTextField(
                       controller: _emailController,
                       labelText: 'Gmail',
@@ -168,7 +166,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                     const SizedBox(height: 16),
 
-                    // Campo Contraseña
                     CustomTextField(
                       controller: _passwordController,
                       labelText: 'Contraseña',
@@ -192,7 +189,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                     const SizedBox(height: 16),
 
-                    // Campo Confirmar Contraseña
                     CustomTextField(
                       controller: _confirmPasswordController,
                       labelText: 'Confirmar Contraseña',
@@ -213,7 +209,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                     const SizedBox(height: 16),
 
-                    // Dropdown Rol (mantenemos el original sin widget personalizado)
                     DropdownButtonFormField<String>(
                       value: _selectedRol,
                       decoration: InputDecoration(
@@ -250,7 +245,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                     const SizedBox(height: 16),
 
-                    // Campo Teléfono
                     CustomTextField(
                       controller: _telefonoController,
                       labelText: 'Teléfono (Opcional)',
@@ -259,7 +253,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                     const SizedBox(height: 16),
 
-                    // Campo Dirección
                     CustomTextField(
                       controller: _direccionController,
                       labelText: 'Dirección (Opcional)',
@@ -268,7 +261,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                     const SizedBox(height: 30),
 
-                    // Botón de Registro
                     CustomElevatedButton(
                       text: 'Registrarse',
                       onPressed: _register,
@@ -276,7 +268,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                     const SizedBox(height: 20),
 
-                    // Enlace a Login
                     TextButton(
                       onPressed: () {
                         Navigator.pushReplacement(

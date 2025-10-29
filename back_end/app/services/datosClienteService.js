@@ -3,7 +3,7 @@ const Usuario = require('../models/UsuarioModel');
 class DatosClienteService {
   async registrarUsuario(datosUsuario) {
     try {
-      // Verificar si el email ya existe
+      // verificar si el gmail ya existe
       const usuarioExistente = await Usuario.findOne({ email: datosUsuario.email });
       if (usuarioExistente) {
         throw new Error('El email ya está registrado');
@@ -49,19 +49,19 @@ class DatosClienteService {
   try {
     const { email, password } = credenciales;
 
-    // Buscar usuario por email
+    // buscar por gmail
     const usuario = await Usuario.findOne({ email });
     
     if (!usuario) {
       throw new Error('Usuario no encontrado');
     }
 
-    // Verificar contraseña (sin encriptar por ahora)
+    // verifica contraseña
     if (usuario.password !== password) {
       throw new Error('Contraseña incorrecta');
     }
 
-    // Devolver usuario sin password
+    // devuelve usuario sin contraseña
     const { password: _, ...usuarioSinPassword } = usuario.toObject();
     return usuarioSinPassword;
 

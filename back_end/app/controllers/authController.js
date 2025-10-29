@@ -6,7 +6,7 @@ class AuthController {
     try {
       const { nombre, email, password, rol, telefono, direccion } = req.body;
 
-      // Validar que el rol sea válido
+      // valida rol
       if (!['arrendador', 'arrendatario'].includes(rol)) {
         return res.status(400).json({
           success: false,
@@ -17,13 +17,11 @@ class AuthController {
       const usuario = await DatosClienteService.registrarUsuario({
         nombre,
         email,
-        password, // Sin encriptar por ahora
+        password, 
         rol,
-       // telefono,
-       // direccion
       });
 
-      // Devolver usuario sin password
+      // Devolver usuario 
       const usuarioSinPassword = {
         _id: usuario._id,
         nombre: usuario.nombre,
@@ -51,7 +49,7 @@ class AuthController {
   try {
     const { email, password } = req.body;
 
-    // Validar campos requeridos
+    // valida campos
     if (!email || !password) {
       return res.status(400).json({
         success: false,
@@ -59,7 +57,7 @@ class AuthController {
       });
     }
 
-    // Llamar al servicio de login
+    // llama al servicio
     const usuario = await DatosClienteService.loginUsuario({
       email,
       password

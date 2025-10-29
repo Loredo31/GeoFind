@@ -115,14 +115,10 @@ class _LoginScreenState extends State<LoginScreen> {
                     const SizedBox(height: 8),
                     const Text(
                       'Inicia sesión en tu cuenta',
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.grey,
-                      ),
+                      style: TextStyle(fontSize: 16, color: Colors.grey),
                     ),
                     const SizedBox(height: 40),
 
-                    // Campo Email
                     TextFormField(
                       controller: _emailController,
                       decoration: InputDecoration(
@@ -135,7 +131,10 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
-                          borderSide: BorderSide(color: Colors.green[500]!, width: 2),
+                          borderSide: BorderSide(
+                            color: Colors.green[500]!,
+                            width: 2,
+                          ),
                         ),
                         filled: true,
                         fillColor: Colors.green[50],
@@ -153,7 +152,6 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     const SizedBox(height: 20),
 
-                    // Campo Contraseña
                     TextFormField(
                       controller: _passwordController,
                       decoration: InputDecoration(
@@ -162,7 +160,9 @@ class _LoginScreenState extends State<LoginScreen> {
                         prefixIcon: Icon(Icons.lock, color: Colors.green[700]),
                         suffixIcon: IconButton(
                           icon: Icon(
-                            _obscurePassword ? Icons.visibility : Icons.visibility_off,
+                            _obscurePassword
+                                ? Icons.visibility
+                                : Icons.visibility_off,
                             color: Colors.green[700],
                           ),
                           onPressed: () {
@@ -177,7 +177,10 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
-                          borderSide: BorderSide(color: Colors.green[500]!, width: 2),
+                          borderSide: BorderSide(
+                            color: Colors.green[500]!,
+                            width: 2,
+                          ),
                         ),
                         filled: true,
                         fillColor: Colors.green[50],
@@ -195,7 +198,6 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     const SizedBox(height: 30),
 
-                    // Botón de Login
                     SizedBox(
                       width: double.infinity,
                       height: 56,
@@ -215,7 +217,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                 width: 20,
                                 child: CircularProgressIndicator(
                                   strokeWidth: 2,
-                                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                                  valueColor: AlwaysStoppedAnimation<Color>(
+                                    Colors.white,
+                                  ),
                                 ),
                               )
                             : const Text(
@@ -226,12 +230,13 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     const SizedBox(height: 20),
 
-                    // Enlace a Registro
                     TextButton(
                       onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => const RegisterScreen()),
+                          MaterialPageRoute(
+                            builder: (context) => const RegisterScreen(),
+                          ),
                         );
                       },
                       child: Text(

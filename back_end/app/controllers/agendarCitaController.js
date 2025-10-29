@@ -23,7 +23,6 @@ try {
     console.log('Intento 2 falló:', error2.message);
     
     try {
-      // Intento 3: Buscar en la raíz del paquete
       MessageTemplates = require('geofind-contract-generator');
       console.log('Librería cargada desde raíz del paquete');
       libreriaCargada = true;
@@ -110,9 +109,6 @@ async function enviarNotificacionCorreo(citaId, estado, motivoRechazo = '') {
     const date = new Date(cita.fecha);
     const fechaFormateada = `${date.getDate().toString().padStart(2, '0')}/${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getFullYear()}`;
     console.log('Fecha formateada:', fechaFormateada);
-
-    // Obtener datos del arrendatario
-    //let emailArrendatario = "31loredo@gmail.com"; // Email de prueba basado en tu ejemplo
     
     try {
       const arrendatario = await UsuarioModel.findById(cita.arrendatarioId);
@@ -126,7 +122,7 @@ async function enviarNotificacionCorreo(citaId, estado, motivoRechazo = '') {
       console.error('Error obteniendo datos del arrendatario:', dbError.message);
     }
 
-    // Obtener dirección de la habitación
+    // obtienen direccion
     let direccion = cita.direccionHabitacion || 'Dirección no especificada';
     
     try {
@@ -139,7 +135,7 @@ async function enviarNotificacionCorreo(citaId, estado, motivoRechazo = '') {
       console.error('Error obteniendo datos de la habitación:', dbError.message);
     }
 
-    // Enviar correo según el estado
+    // envia correo
     if (estado === true) {
       console.log('Enviando correo de CONFIRMACIÓN...');
       console.log('Datos del correo:', {
@@ -246,11 +242,11 @@ class AgendarCitaController {
       
       console.log(`Actualizando estado de cita ${id} a:`, estado);
       
-      // 1. Actualizar el estado de la cita
+      // actualizar el estado de la cita
       const citaActualizada = await AgendarCitaService.actualizarEstadoCita(id, estado);
       console.log('Cita actualizada correctamente');
       
-      // 2. Intentar enviar correo
+      // envia correo
       try {
         console.log('Iniciando proceso de envío de correo...');
         await enviarNotificacionCorreo(id, estado, motivoRechazo);

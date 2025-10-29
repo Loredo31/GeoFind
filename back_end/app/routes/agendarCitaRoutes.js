@@ -2,16 +2,13 @@ const express = require('express');
 const router = express.Router();
 const AgendarCitaController = require('../controllers/agendarCitaController');
 
-// Agendar cita
+//crea
 router.post('/', AgendarCitaController.crearCita);
-
-// Obtener citas por arrendador (por habitación)
+// obtener citas arrendador
 router.get('/arrendador/:habitacionId', AgendarCitaController.obtenerCitasArrendador);
-
-// Obtener citas por arrendatario
+// obtener citas arrendatario
 router.get('/arrendatario/:arrendatarioId', AgendarCitaController.obtenerCitasArrendatario);
-
-// Actualizar estado de cita
+// actualizar
 router.put('/:id/estado', AgendarCitaController.actualizarEstadoCita);
 
 module.exports = router;

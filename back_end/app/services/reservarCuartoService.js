@@ -4,7 +4,6 @@ const GenerarContratoService = require('./generarContratoService');
 class ReservarCuartoService {
   async crearReserva(datosReserva) {
     try {
-      // Generar número de contrato único
       datosReserva.numeroContrato = GenerarContratoService.generarNumeroContrato();
       
       const reserva = new ReservarCuarto(datosReserva);

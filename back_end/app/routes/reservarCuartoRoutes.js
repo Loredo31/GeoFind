@@ -2,16 +2,13 @@ const express = require('express');
 const router = express.Router();
 const ReservarCuartoController = require('../controllers/reservarCuartoController');
 
-// Crear reserva
+// crear 
 router.post('/', ReservarCuartoController.crearReserva);
-
-// Obtener reservas por arrendador (por habitación)
+// obtener reservas  arrendador
 router.get('/arrendador/:habitacionId', ReservarCuartoController.obtenerReservasArrendador);
-
-// Obtener reservas por arrendatario
+// obtener reservas arrendatario
 router.get('/arrendatario/:arrendatarioId', ReservarCuartoController.obtenerReservasArrendatario);
-
-// Actualizar estado de reserva
+//actualizae
 router.put('/:id/estado', ReservarCuartoController.actualizarEstadoReserva);
 
 module.exports = router;

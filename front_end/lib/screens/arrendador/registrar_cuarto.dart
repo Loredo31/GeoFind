@@ -71,28 +71,27 @@ class _RegistrarCuartoState extends State<RegistrarCuarto> {
           for (final file in files) {
             final reader = html.FileReader();
             final fileCompleter = Completer<void>();
-            
+
             reader.onLoadEnd.listen((e) {
               if (reader.result != null) {
                 final String base64 = reader.result as String;
-                // Remover el prefijo "data:image/...;base64,"
                 final String pureBase64 = base64.split(',').last;
                 nuevasImagenes.add(pureBase64);
               }
               fileCompleter.complete();
             });
-            
+
             reader.readAsDataUrl(file);
             await fileCompleter.future;
           }
-          
+
           setState(() {
             _fotografiasBase64.addAll(nuevasImagenes);
           });
-          
+
           _mostrarMensaje('${nuevasImagenes.length} imagen(es) agregada(s)');
         }
-        
+
         input.remove();
         completer.complete();
       });
@@ -100,7 +99,6 @@ class _RegistrarCuartoState extends State<RegistrarCuarto> {
       html.document.body!.append(input);
       input.click();
       await completer.future;
-
     } catch (error) {
       _mostrarError('Error al seleccionar imágenes: $error');
     }
@@ -127,20 +125,31 @@ class _RegistrarCuartoState extends State<RegistrarCuarto> {
       final datosCuarto = {
         'nombreArrendador': widget.usuario.nombre,
         'tipo': _tipoSeleccionado,
-        'capacidad': _tipoSeleccionado == 'compartido' ? 
-            int.parse(_capacidadController.text) : 1,
+        'capacidad': _tipoSeleccionado == 'compartido'
+            ? int.parse(_capacidadController.text)
+            : 1,
         'zona': _zonaSeleccionada,
-        'clausulas': _clausulasController.text.isEmpty ? null : _clausulasController.text,
+        'clausulas': _clausulasController.text.isEmpty
+            ? null
+            : _clausulasController.text,
         'duracionRutas': int.parse(_duracionRutasController.text),
         'direccion': _direccionController.text,
-        'googleMaps': _googleMapsController.text.isEmpty ? null : _googleMapsController.text,
+        'googleMaps': _googleMapsController.text.isEmpty
+            ? null
+            : _googleMapsController.text,
         'fotografias': _fotografiasBase64,
         'costo': int.parse(_costoController.text),
         'servicios': _serviciosSeleccionados,
         'datosBancarios': {
-          'bank_name': _bankNameController.text.isEmpty ? null : _bankNameController.text,
-          'account_number': _accountNumberController.text.isEmpty ? null : _accountNumberController.text,
-          'account_holder': _accountHolderController.text.isEmpty ? null : _accountHolderController.text,
+          'bank_name': _bankNameController.text.isEmpty
+              ? null
+              : _bankNameController.text,
+          'account_number': _accountNumberController.text.isEmpty
+              ? null
+              : _accountNumberController.text,
+          'account_holder': _accountHolderController.text.isEmpty
+              ? null
+              : _accountHolderController.text,
           'clabe': _clabeController.text.isEmpty ? null : _clabeController.text,
         },
         'arrendadorId': widget.usuario.id,
@@ -152,7 +161,9 @@ class _RegistrarCuartoState extends State<RegistrarCuarto> {
       if (response['success'] == true) {
         _mostrarExito('Habitación registrada exitosamente');
       } else {
-        _mostrarError(response['message'] ?? 'Error al registrar la habitación');
+        _mostrarError(
+          response['message'] ?? 'Error al registrar la habitación',
+        );
       }
     } catch (error) {
       _mostrarError('Error al registrar la habitación: ${error.toString()}');
@@ -187,8 +198,7 @@ class _RegistrarCuartoState extends State<RegistrarCuarto> {
         duration: const Duration(seconds: 3),
       ),
     );
-    
-    // Regresar a la pantalla anterior con resultado true
+
     Navigator.pop(context, true);
   }
 
@@ -241,7 +251,7 @@ class _RegistrarCuartoState extends State<RegistrarCuarto> {
     return Scaffold(
       backgroundColor: Colors.green[50],
       appBar: AppBar(
-        toolbarHeight: 80, // Más ancha como las otras pantallas
+        toolbarHeight: 80,
         title: Row(
           children: [
             Container(
@@ -250,11 +260,7 @@ class _RegistrarCuartoState extends State<RegistrarCuarto> {
                 color: Colors.white.withOpacity(0.2),
                 borderRadius: BorderRadius.circular(12),
               ),
-              child: Icon(
-                Icons.add_home_work, // Icono más específico para registrar habitación
-                color: Colors.white,
-                size: 20,
-              ),
+              child: Icon(Icons.add_home_work, color: Colors.white, size: 20),
             ),
             const SizedBox(width: 12),
             Column(
@@ -291,7 +297,6 @@ class _RegistrarCuartoState extends State<RegistrarCuarto> {
           ),
         ),
         actions: [
-          // Botón de limpiar con diseño mejorado
           Container(
             margin: const EdgeInsets.only(right: 8),
             decoration: BoxDecoration(
@@ -340,7 +345,6 @@ class _RegistrarCuartoState extends State<RegistrarCuarto> {
                 key: _formKey,
                 child: Column(
                   children: [
-                    // Información Básica
                     _buildSeccion(
                       'Información Básica',
                       Icons.info,
@@ -361,7 +365,10 @@ class _RegistrarCuartoState extends State<RegistrarCuarto> {
                                 _tipoSeleccionado = value;
                               });
                             },
-                            validator: (value) => _validarRequerido(value, 'el tipo de habitación'),
+                            validator: (value) => _validarRequerido(
+                              value,
+                              'el tipo de habitación',
+                            ),
                           ),
 
                           if (_tipoSeleccionado == 'compartido')
@@ -370,7 +377,8 @@ class _RegistrarCuartoState extends State<RegistrarCuarto> {
                               labelText: 'Capacidad (personas)',
                               prefixIcon: Icons.people,
                               keyboardType: TextInputType.number,
-                              validator: (value) => _validarNumero(value, 'la capacidad'),
+                              validator: (value) =>
+                                  _validarNumero(value, 'la capacidad'),
                             ),
 
                           CustomDropdownField(
@@ -388,15 +396,16 @@ class _RegistrarCuartoState extends State<RegistrarCuarto> {
                                 _zonaSeleccionada = value;
                               });
                             },
-                            validator: (value) => _validarRequerido(value, 'la zona'),
+                            validator: (value) =>
+                                _validarRequerido(value, 'la zona'),
                           ),
 
                           CustomFormField(
                             controller: _direccionController,
                             labelText: 'Dirección completa',
                             prefixIcon: Icons.home,
-                            //maxLines: 2,
-                            validator: (value) => _validarRequerido(value, 'la dirección'),
+                            validator: (value) =>
+                                _validarRequerido(value, 'la dirección'),
                           ),
 
                           CustomFormField(
@@ -405,7 +414,7 @@ class _RegistrarCuartoState extends State<RegistrarCuarto> {
                             prefixIcon: Icons.calendar_today,
                             keyboardType: TextInputType.number,
                             validator: (value) => _validarNumero(
-                              value, 
+                              value,
                               'la duración del contrato',
                               min: 6,
                               max: 12,
@@ -417,7 +426,6 @@ class _RegistrarCuartoState extends State<RegistrarCuarto> {
 
                     const SizedBox(height: 20),
 
-                    // Sección de FOTOS
                     _buildSeccion(
                       'Fotografías',
                       Icons.photo_library,
@@ -451,7 +459,7 @@ class _RegistrarCuartoState extends State<RegistrarCuarto> {
                             label: const Text('Seleccionar Fotos'),
                           ),
                           const SizedBox(height: 12),
-                          
+
                           if (_fotografiasBase64.isNotEmpty)
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -468,43 +476,56 @@ class _RegistrarCuartoState extends State<RegistrarCuarto> {
                                 Wrap(
                                   spacing: 8,
                                   runSpacing: 8,
-                                  children: List.generate(_fotografiasBase64.length, (index) {
-                                    return Stack(
-                                      children: [
-                                        Container(
-                                          width: 80,
-                                          height: 80,
-                                          decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(8),
-                                            border: Border.all(color: Colors.green[300]!),
-                                            image: DecorationImage(
-                                              image: MemoryImage(base64Decode(_fotografiasBase64[index])),
-                                              fit: BoxFit.cover,
-                                            ),
-                                          ),
-                                        ),
-                                        Positioned(
-                                          top: 0,
-                                          right: 0,
-                                          child: GestureDetector(
-                                            onTap: () => _eliminarFoto(index),
-                                            child: Container(
-                                              padding: const EdgeInsets.all(2),
-                                              decoration: BoxDecoration(
-                                                color: Colors.red,
-                                                borderRadius: BorderRadius.circular(12),
+                                  children: List.generate(
+                                    _fotografiasBase64.length,
+                                    (index) {
+                                      return Stack(
+                                        children: [
+                                          Container(
+                                            width: 80,
+                                            height: 80,
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(8),
+                                              border: Border.all(
+                                                color: Colors.green[300]!,
                                               ),
-                                              child: const Icon(
-                                                Icons.close,
-                                                color: Colors.white,
-                                                size: 14,
+                                              image: DecorationImage(
+                                                image: MemoryImage(
+                                                  base64Decode(
+                                                    _fotografiasBase64[index],
+                                                  ),
+                                                ),
+                                                fit: BoxFit.cover,
                                               ),
                                             ),
                                           ),
-                                        ),
-                                      ],
-                                    );
-                                  }),
+                                          Positioned(
+                                            top: 0,
+                                            right: 0,
+                                            child: GestureDetector(
+                                              onTap: () => _eliminarFoto(index),
+                                              child: Container(
+                                                padding: const EdgeInsets.all(
+                                                  2,
+                                                ),
+                                                decoration: BoxDecoration(
+                                                  color: Colors.red,
+                                                  borderRadius:
+                                                      BorderRadius.circular(12),
+                                                ),
+                                                child: const Icon(
+                                                  Icons.close,
+                                                  color: Colors.white,
+                                                  size: 14,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  ),
                                 ),
                               ],
                             )
@@ -522,7 +543,6 @@ class _RegistrarCuartoState extends State<RegistrarCuarto> {
 
                     const SizedBox(height: 20),
 
-                    // Costo y Servicios
                     _buildSeccion(
                       'Precio y Servicios',
                       Icons.attach_money,
@@ -533,7 +553,8 @@ class _RegistrarCuartoState extends State<RegistrarCuarto> {
                             labelText: 'Costo mensual (\$)',
                             prefixIcon: Icons.attach_money,
                             keyboardType: TextInputType.number,
-                            validator: (value) => _validarNumero(value, 'el costo'),
+                            validator: (value) =>
+                                _validarNumero(value, 'el costo'),
                           ),
 
                           ServicesCheckboxGroup(
@@ -550,18 +571,11 @@ class _RegistrarCuartoState extends State<RegistrarCuarto> {
 
                     const SizedBox(height: 20),
 
-                    // Información Adicional
                     _buildSeccion(
                       'Información Adicional',
                       Icons.description,
                       Column(
                         children: [
-                          // CustomFormField(
-                          //   controller: _clausulasController,
-                          //   labelText: 'Cláusulas (opcional)',
-                          //   prefixIcon: Icons.description,
-                          //   //maxLines: 3,
-                          // ),
                           CustomFormField(
                             controller: _googleMapsController,
                             labelText: 'Enlace de Google Maps (opcional)',
@@ -574,7 +588,6 @@ class _RegistrarCuartoState extends State<RegistrarCuarto> {
 
                     const SizedBox(height: 20),
 
-                    // Datos Bancarios
                     _buildSeccion(
                       'Datos Bancarios (Opcional)',
                       Icons.account_balance,
@@ -608,12 +621,13 @@ class _RegistrarCuartoState extends State<RegistrarCuarto> {
 
                     const SizedBox(height: 24),
 
-                    // Botones de acción
                     Row(
                       children: [
                         Expanded(
                           child: OutlinedButton(
-                            onPressed: _isLoading ? null : () => Navigator.pop(context, false),
+                            onPressed: _isLoading
+                                ? null
+                                : () => Navigator.pop(context, false),
                             style: OutlinedButton.styleFrom(
                               foregroundColor: Colors.green[700],
                               side: BorderSide(color: Colors.green[700]!),
@@ -643,7 +657,9 @@ class _RegistrarCuartoState extends State<RegistrarCuarto> {
                                     width: 20,
                                     child: CircularProgressIndicator(
                                       strokeWidth: 2,
-                                      valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                                      valueColor: AlwaysStoppedAnimation<Color>(
+                                        Colors.white,
+                                      ),
                                     ),
                                   )
                                 : const Text('Registrar Habitación'),
@@ -664,9 +680,7 @@ class _RegistrarCuartoState extends State<RegistrarCuarto> {
   Widget _buildSeccion(String titulo, IconData icono, Widget contenido) {
     return Card(
       elevation: 2,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(

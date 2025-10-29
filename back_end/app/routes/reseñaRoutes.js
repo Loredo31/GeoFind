@@ -2,13 +2,11 @@ const express = require('express');
 const router = express.Router();
 const ReseñaController = require('../controllers/reseñaController');
 
-// Crear reseña
+// crear
 router.post('/', ReseñaController.crearReseña);
-
-// Obtener reseñas por habitación
+// obtener por habitacion
 router.get('/habitacion/:habitacionId', ReseñaController.obtenerReseñasHabitacion);
-
-// Obtener todas las reseñas
+// obtener todas 
 router.get('/', ReseñaController.obtenerTodasLasReseñas);
 
 module.exports = router;

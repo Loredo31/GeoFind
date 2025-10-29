@@ -5,7 +5,6 @@ class GenerarContratoService {
     return `CONTRATO-${timestamp}-${random}`;
   }
 
-  // Aquí puedes integrar el npm geofind-contract-generator después
   generarContratoCompleto(datosReserva) {
     return {
       numeroContrato: this.generarNumeroContrato(),

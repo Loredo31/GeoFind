@@ -7,8 +7,6 @@ import '../auth/login_screen.dart';
 import 'registrar_cuarto.dart';
 import 'dart:convert';
 import '../../widget/arrendador/notifications_widget.dart';
-// import '../../services/reserva_cuarto.dart';
-// import '../../services/cita_service.dart'; 
 
 class ArrendadorHome extends StatefulWidget {
   final Usuario usuario;
@@ -130,11 +128,14 @@ class _ArrendadorHomeState extends State<ArrendadorHome> {
       builder: (context) => StatefulBuilder(
         builder: (context, setState) {
           final fotografias = habitacion['fotografias'] ?? [];
-          final bool tieneImagenes = fotografias is List && fotografias.isNotEmpty;
+          final bool tieneImagenes =
+              fotografias is List && fotografias.isNotEmpty;
 
           return Dialog(
             backgroundColor: Colors.green[50],
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+            ),
             insetPadding: const EdgeInsets.all(20),
             child: ConstrainedBox(
               constraints: BoxConstraints(
@@ -186,7 +187,9 @@ class _ArrendadorHomeState extends State<ArrendadorHome> {
                                 },
                                 itemBuilder: (context, index) {
                                   return Container(
-                                    margin: const EdgeInsets.symmetric(horizontal: 8),
+                                    margin: const EdgeInsets.symmetric(
+                                      horizontal: 8,
+                                    ),
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(12),
                                       image: DecorationImage(
@@ -198,7 +201,8 @@ class _ArrendadorHomeState extends State<ArrendadorHome> {
                                 },
                               ),
 
-                              if (fotografias.length > 1 && _currentImageIndex > 0)
+                              if (fotografias.length > 1 &&
+                                  _currentImageIndex > 0)
                                 Positioned(
                                   left: 0,
                                   top: 0,
@@ -212,10 +216,16 @@ class _ArrendadorHomeState extends State<ArrendadorHome> {
                                         shape: BoxShape.circle,
                                       ),
                                       child: IconButton(
-                                        icon: Icon(Icons.chevron_left, color: Colors.white, size: 20),
+                                        icon: Icon(
+                                          Icons.chevron_left,
+                                          color: Colors.white,
+                                          size: 20,
+                                        ),
                                         onPressed: () {
                                           _pageController.previousPage(
-                                            duration: const Duration(milliseconds: 300),
+                                            duration: const Duration(
+                                              milliseconds: 300,
+                                            ),
                                             curve: Curves.easeInOut,
                                           );
                                         },
@@ -224,7 +234,8 @@ class _ArrendadorHomeState extends State<ArrendadorHome> {
                                     ),
                                   ),
                                 ),
-                              if (fotografias.length > 1 && _currentImageIndex < fotografias.length - 1)
+                              if (fotografias.length > 1 &&
+                                  _currentImageIndex < fotografias.length - 1)
                                 Positioned(
                                   right: 0,
                                   top: 0,
@@ -238,10 +249,16 @@ class _ArrendadorHomeState extends State<ArrendadorHome> {
                                         shape: BoxShape.circle,
                                       ),
                                       child: IconButton(
-                                        icon: Icon(Icons.chevron_right, color: Colors.white, size: 20),
+                                        icon: Icon(
+                                          Icons.chevron_right,
+                                          color: Colors.white,
+                                          size: 20,
+                                        ),
                                         onPressed: () {
                                           _pageController.nextPage(
-                                            duration: const Duration(milliseconds: 300),
+                                            duration: const Duration(
+                                              milliseconds: 300,
+                                            ),
                                             curve: Curves.easeInOut,
                                           );
                                         },
@@ -255,7 +272,10 @@ class _ArrendadorHomeState extends State<ArrendadorHome> {
                                   top: 8,
                                   right: 8,
                                   child: Container(
-                                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 8,
+                                      vertical: 4,
+                                    ),
                                     decoration: BoxDecoration(
                                       color: Colors.black54,
                                       borderRadius: BorderRadius.circular(8),
@@ -277,7 +297,9 @@ class _ArrendadorHomeState extends State<ArrendadorHome> {
                           const SizedBox(height: 8),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
-                            children: List.generate(fotografias.length, (index) {
+                            children: List.generate(fotografias.length, (
+                              index,
+                            ) {
                               return GestureDetector(
                                 onTap: () {
                                   _pageController.animateToPage(
@@ -287,12 +309,14 @@ class _ArrendadorHomeState extends State<ArrendadorHome> {
                                   );
                                 },
                                 child: Container(
-                                  margin: const EdgeInsets.symmetric(horizontal: 3),
+                                  margin: const EdgeInsets.symmetric(
+                                    horizontal: 3,
+                                  ),
                                   width: 8,
                                   height: 8,
                                   decoration: BoxDecoration(
                                     shape: BoxShape.circle,
-                                    color: _currentImageIndex == index 
+                                    color: _currentImageIndex == index
                                         ? Colors.green[700]!
                                         : Colors.green[300]!,
                                   ),
@@ -362,7 +386,6 @@ class _ArrendadorHomeState extends State<ArrendadorHome> {
                                   ),
                               ],
                             ),
-                            // SERVICIOS - MODIFICADO: MOSTRAR TODOS LOS SERVICIOS
                             if (habitacion['servicios'] != null &&
                                 (habitacion['servicios'] as List).isNotEmpty)
                               Column(
@@ -381,30 +404,36 @@ class _ArrendadorHomeState extends State<ArrendadorHome> {
                                   Wrap(
                                     spacing: 6,
                                     runSpacing: 4,
-                                    // QUITADO: .take(4) para mostrar todos los servicios
-                                    children: (habitacion['servicios'] as List).map((servicio) {
-                                      return Container(
-                                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                                        decoration: BoxDecoration(
-                                          color: Colors.green[50],
-                                          borderRadius: BorderRadius.circular(12),
-                                          border: Border.all(color: Colors.green[100]!),
-                                        ),
-                                        child: Text(
-                                          servicio.toString(),
-                                          style: TextStyle(
-                                            fontSize: 10,
-                                            color: Colors.green[800],
-                                          ),
-                                        ),
-                                      );
-                                    }).toList(),
+                                    children: (habitacion['servicios'] as List)
+                                        .map((servicio) {
+                                          return Container(
+                                            padding: const EdgeInsets.symmetric(
+                                              horizontal: 8,
+                                              vertical: 4,
+                                            ),
+                                            decoration: BoxDecoration(
+                                              color: Colors.green[50],
+                                              borderRadius:
+                                                  BorderRadius.circular(12),
+                                              border: Border.all(
+                                                color: Colors.green[100]!,
+                                              ),
+                                            ),
+                                            child: Text(
+                                              servicio.toString(),
+                                              style: TextStyle(
+                                                fontSize: 10,
+                                                color: Colors.green[800],
+                                              ),
+                                            ),
+                                          );
+                                        })
+                                        .toList(),
                                   ),
                                 ],
                               ),
 
                             const SizedBox(height: 12),
-                            // QUITADO: _buildEstadoHabitacionCompact(habitacion), - ELIMINADO EL APARTADO DE DISPONIBLE
                           ],
                         ),
                       ),
@@ -415,13 +444,15 @@ class _ArrendadorHomeState extends State<ArrendadorHome> {
                           Expanded(
                             child: OutlinedButton(
                               onPressed: () {
-                                Navigator.pop(context); // Cerrar el diálogo primero
-                                _eliminarHabitacion(habitacion['_id']); // Luego eliminar
+                                Navigator.pop(context);
+                                _eliminarHabitacion(habitacion['_id']);
                               },
                               style: OutlinedButton.styleFrom(
                                 foregroundColor: Colors.red,
                                 side: const BorderSide(color: Colors.red),
-                                padding: const EdgeInsets.symmetric(vertical: 12),
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 12,
+                                ),
                               ),
                               child: const Text('Eliminar'),
                             ),
@@ -436,7 +467,9 @@ class _ArrendadorHomeState extends State<ArrendadorHome> {
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Colors.green[700],
                                 foregroundColor: Colors.white,
-                                padding: const EdgeInsets.symmetric(vertical: 12),
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 12,
+                                ),
                               ),
                               child: const Text('Editar'),
                             ),
@@ -465,10 +498,7 @@ class _ArrendadorHomeState extends State<ArrendadorHome> {
           children: [
             Text(
               label,
-              style: TextStyle(
-                fontSize: 10,
-                color: Colors.grey[600],
-              ),
+              style: TextStyle(fontSize: 10, color: Colors.grey[600]),
             ),
             Text(
               value,
@@ -483,8 +513,6 @@ class _ArrendadorHomeState extends State<ArrendadorHome> {
       ],
     );
   }
-
-  // ELIMINADO: Método _buildEstadoHabitacionCompact completo
 
   Widget _buildInfoItem(String label, String value) {
     return Padding(
@@ -506,12 +534,11 @@ class _ArrendadorHomeState extends State<ArrendadorHome> {
     );
   }
 
-  // ELIMINADO: Método _buildEstadoHabitacion completo
-
   Future<void> _eliminarHabitacion(String? habitacionId) async {
     if (habitacionId == null) return;
 
-    bool confirmar = await showDialog(
+    bool confirmar =
+        await showDialog(
           context: context,
           builder: (context) => AlertDialog(
             title: const Text('Confirmar eliminación'),
@@ -540,7 +567,7 @@ class _ArrendadorHomeState extends State<ArrendadorHome> {
         );
         if (response['success'] == true) {
           _mostrarMensaje('Propiedad eliminada correctamente');
-          _cargarMisHabitaciones(); // Recargar la lista
+          _cargarMisHabitaciones();
         } else {
           _mostrarError(
             response['message'] ?? 'Error al eliminar la propiedad',
@@ -577,7 +604,8 @@ class _ArrendadorHomeState extends State<ArrendadorHome> {
   }
 
   Future<void> _cerrarSesion() async {
-    bool confirmar = await showDialog(
+    bool confirmar =
+        await showDialog(
           context: context,
           builder: (context) => AlertDialog(
             backgroundColor: Colors.green[50],
@@ -639,155 +667,128 @@ class _ArrendadorHomeState extends State<ArrendadorHome> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.green[50],
-      // appBar: AppBar(
-      //   title: const Text('Panel Arrendador'),
-      //   backgroundColor: Colors.green[700],
-      //   foregroundColor: Colors.white,
-      //   elevation: 0,
-      //   actions: [
-      //     NotificationsWidget(usuario: widget.usuario),
-      //     IconButton(
-      //       icon: const Icon(Icons.add),
-      //       onPressed: _navegarAAgregarPropiedad,
-      //       tooltip: 'Agregar Propiedad',
-      //     ),
-      //     IconButton(
-      //       icon: const Icon(Icons.logout),
-      //       onPressed: _cerrarSesion,
-      //       tooltip: 'Cerrar Sesión',
-      //     ),
-      //   ],
-      // ),
-
       appBar: AppBar(
-  toolbarHeight: 80, // Más ancha
-  title: Row(
-    children: [
-      Container(
-        padding: const EdgeInsets.all(8),
-        decoration: BoxDecoration(
-          color: Colors.white.withOpacity(0.2),
-          borderRadius: BorderRadius.circular(12),
+        toolbarHeight: 80,
+        title: Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.2),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Icon(Icons.business_center, color: Colors.white, size: 20),
+            ),
+            const SizedBox(width: 12),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Panel Arrendador',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white,
+                  ),
+                ),
+                Text(
+                  'Mis Propiedades',
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w400,
+                    color: Colors.white.withOpacity(0.8),
+                  ),
+                ),
+              ],
+            ),
+          ],
         ),
-        child: Icon(
-          Icons.business_center,
-          color: Colors.white,
-          size: 20,
+        backgroundColor: Colors.green[700],
+        foregroundColor: Colors.white,
+        elevation: 4,
+        shadowColor: Colors.green[800]?.withOpacity(0.5),
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(16),
+            bottomRight: Radius.circular(16),
+          ),
         ),
-      ),
-      const SizedBox(width: 12),
-      Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'Panel Arrendador',
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.w600,
-              color: Colors.white,
+        actions: [
+          NotificationsWidget(usuario: widget.usuario),
+          const SizedBox(width: 4),
+          Container(
+            margin: const EdgeInsets.only(right: 4),
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(0.15),
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(
+                color: Colors.white.withOpacity(0.3),
+                width: 1,
+              ),
+            ),
+            child: IconButton(
+              icon: const Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(Icons.add, size: 18),
+                  SizedBox(width: 2),
+                  Text(
+                    'Agregar',
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.white,
+                    ),
+                  ),
+                ],
+              ),
+              onPressed: _navegarAAgregarPropiedad,
+              tooltip: 'Agregar Propiedad',
+              style: IconButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
             ),
           ),
-          Text(
-            'Mis Propiedades',
-            style: TextStyle(
-              fontSize: 12,
-              fontWeight: FontWeight.w400,
-              color: Colors.white.withOpacity(0.8),
+          const SizedBox(width: 4),
+          Container(
+            margin: const EdgeInsets.only(right: 8),
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(0.15),
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(
+                color: Colors.white.withOpacity(0.3),
+                width: 1,
+              ),
+            ),
+            child: IconButton(
+              icon: const Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(Icons.logout, size: 18),
+                  SizedBox(width: 2),
+                  Text(
+                    'Salir',
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.white,
+                    ),
+                  ),
+                ],
+              ),
+              onPressed: _cerrarSesion,
+              tooltip: 'Cerrar Sesión',
+              style: IconButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
             ),
           ),
         ],
       ),
-    ],
-  ),
-  backgroundColor: Colors.green[700],
-  foregroundColor: Colors.white,
-  elevation: 4,
-  shadowColor: Colors.green[800]?.withOpacity(0.5),
-  shape: const RoundedRectangleBorder(
-    borderRadius: BorderRadius.only(
-      bottomLeft: Radius.circular(16),
-      bottomRight: Radius.circular(16),
-    ),
-  ),
-  actions: [
-    // Widget de notificaciones con el diseño mejorado
-    NotificationsWidget(usuario: widget.usuario),
-    const SizedBox(width: 4),
-    // Botón de Agregar mejorado
-    Container(
-      margin: const EdgeInsets.only(right: 4),
-      decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.15),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: Colors.white.withOpacity(0.3),
-          width: 1,
-        ),
-      ),
-      child: IconButton(
-        icon: const Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(Icons.add, size: 18),
-            SizedBox(width: 2),
-            Text(
-              'Agregar',
-              style: TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.w500,
-                color: Colors.white,
-              ),
-            ),
-          ],
-        ),
-        onPressed: _navegarAAgregarPropiedad,
-        tooltip: 'Agregar Propiedad',
-        style: IconButton.styleFrom(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
-        ),
-      ),
-    ),
-    const SizedBox(width: 4),
-    // Botón de Cerrar Sesión mejorado
-    Container(
-      margin: const EdgeInsets.only(right: 8),
-      decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.15),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: Colors.white.withOpacity(0.3),
-          width: 1,
-        ),
-      ),
-      child: IconButton(
-        icon: const Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(Icons.logout, size: 18),
-            SizedBox(width: 2),
-            Text(
-              'Salir',
-              style: TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.w500,
-                color: Colors.white,
-              ),
-            ),
-          ],
-        ),
-        onPressed: _cerrarSesion,
-        tooltip: 'Cerrar Sesión',
-        style: IconButton.styleFrom(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
-        ),
-      ),
-    ),
-  ],
-),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16),
@@ -841,60 +842,61 @@ class _ArrendadorHomeState extends State<ArrendadorHome> {
                       ),
                     )
                   : _misHabitaciones.isEmpty
-                      ? Container(
-                          height: 300,
-                          child: Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(
-                                  Icons.home_work,
-                                  size: 64,
-                                  color: Colors.green[300],
-                                ),
-                                const SizedBox(height: 16),
-                                Text(
-                                  'No tienes propiedades registradas',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    color: Colors.green[600],
-                                  ),
-                                ),
-                                const SizedBox(height: 12),
-                                ElevatedButton(
-                                  onPressed: _navegarAAgregarPropiedad,
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.green[700],
-                                    foregroundColor: Colors.white,
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 24,
-                                      vertical: 12,
-                                    ),
-                                  ),
-                                  child: const Text('Agregar Primera Propiedad'),
-                                ),
-                              ],
+                  ? Container(
+                      height: 300,
+                      child: Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.home_work,
+                              size: 64,
+                              color: Colors.green[300],
                             ),
-                          ),
-                        )
-                      : GridView.builder(
-                          shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
-                          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                            const SizedBox(height: 16),
+                            Text(
+                              'No tienes propiedades registradas',
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.green[600],
+                              ),
+                            ),
+                            const SizedBox(height: 12),
+                            ElevatedButton(
+                              onPressed: _navegarAAgregarPropiedad,
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.green[700],
+                                foregroundColor: Colors.white,
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 24,
+                                  vertical: 12,
+                                ),
+                              ),
+                              child: const Text('Agregar Primera Propiedad'),
+                            ),
+                          ],
+                        ),
+                      ),
+                    )
+                  : GridView.builder(
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 4,
                             crossAxisSpacing: 8,
                             mainAxisSpacing: 8,
                             childAspectRatio: 0.7,
                           ),
-                          itemCount: _misHabitaciones.length,
-                          itemBuilder: (context, index) {
-                            final habitacion = _misHabitaciones[index];
-                            return HabitacionCard(
-                              habitacion: habitacion,
-                              onTap: () => _mostrarDetallesHabitacion(habitacion),
-                            );
-                          },
-                        ),
+                      itemCount: _misHabitaciones.length,
+                      itemBuilder: (context, index) {
+                        final habitacion = _misHabitaciones[index];
+                        return HabitacionCard(
+                          habitacion: habitacion,
+                          onTap: () => _mostrarDetallesHabitacion(habitacion),
+                        );
+                      },
+                    ),
             ],
           ),
         ),
@@ -905,7 +907,8 @@ class _ArrendadorHomeState extends State<ArrendadorHome> {
   String _calcularTotalIngresos() {
     double total = 0;
     for (var habitacion in _misHabitaciones) {
-      final costo = double.tryParse(habitacion['costo']?.toString() ?? '0') ?? 0;
+      final costo =
+          double.tryParse(habitacion['costo']?.toString() ?? '0') ?? 0;
       total += costo;
     }
     return total.toStringAsFixed(0);

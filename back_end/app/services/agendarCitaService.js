@@ -40,18 +40,18 @@ class AgendarCitaService {
     }
   }
 
-  // NUEVO MÉTODO: Obtener cita completa con datos poblados (CORREGIDO)
+  // obtiene citas
   async obtenerCitaCompletaPorId(id) {
     try {
       const cita = await AgendarCita.findById(id)
         .populate({
           path: 'arrendatarioId',
-          model: 'UsuarioModel', // Especifica el nombre del modelo exacto
+          model: 'UsuarioModel', 
           select: 'email nombre'
         })
         .populate({
           path: 'habitacionId',
-          model: 'InformacionModel', // Especifica el nombre del modelo exacto
+          model: 'InformacionModel', 
           select: 'direccion zona'
         });
       
@@ -65,7 +65,6 @@ class AgendarCitaService {
     }
   }
 
-  // Método alternativo si el populate no funciona
   async obtenerCitaConDatosAdicionales(id) {
     try {
       const cita = await AgendarCita.findById(id);
@@ -74,12 +73,12 @@ class AgendarCitaService {
         throw new Error('Cita no encontrada');
       }
 
-      // Obtener datos del arrendatario
+      // obtener datos del arrendatario
       const arrendatario = await UsuarioModel.findById(cita.arrendatarioId);
-      // Obtener datos de la habitación
+      // obtener datos de la habitación
       const habitacion = await InformacionModel.findById(cita.habitacionId);
 
-      // Combinar los datos
+      // Combinar  datos
       return {
         ...cita.toObject(),
         arrendatarioData: arrendatario,

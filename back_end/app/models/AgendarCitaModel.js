@@ -15,7 +15,7 @@ const agendarCitaSchema = new mongoose.Schema({
   },
   estado: {
     type: Boolean,
-    default: null // null = pendiente, false = rechazado, true = aceptado
+    default: null
   },
   habitacionId: {
     type: mongoose.Schema.Types.ObjectId,

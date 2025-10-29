@@ -2,26 +2,26 @@ const ReservarCuartoService = require('../services/reservarCuartoService');
 const ReservarCuarto = require('../models/ReservarCuartoModel');
 const InformacionModel = require('../models/InformacionModel');
 
-// Cargar la librería de correos y contratos
+// carga la librería de correos y contratos
 let EmailSender, ContractGenerator;
 let libreriaCargada = false;
 
 try {
   EmailSender = require('geofind-contract-generator/src/emailSender');
   ContractGenerator = require('geofind-contract-generator/src/contractGenerator');
-  console.log('✅ Librerías de correo y contratos cargadas correctamente');
+  console.log('Librerías de correo y contratos cargadas correctamente');
   libreriaCargada = true;
 } catch (error) {
-  console.warn('⚠️ No se pudieron cargar las librerías de correo/contratos:', error.message);
+  console.warn('No se pudieron cargar las librerías de correo/contratos:', error.message);
   libreriaCargada = false;
 }
 
-// FUNCIÓN para enviar correo de APROBACIÓN con contrato
+// manda correo aceptacion y contrato
 async function enviarCorreoAprobacionConContrato(reservaId) {
-  console.log(`🔍 Iniciando envío de correo de APROBACIÓN para reserva: ${reservaId}`);
+  console.log(`Iniciando envío de correo de APROBACIÓN para reserva: ${reservaId}`);
   
   if (!libreriaCargada) {
-    console.log('❌ Librerías de correo no disponibles');
+    console.log('Librerías de correo no disponibles');
     return;
   }
 
@@ -29,17 +29,17 @@ async function enviarCorreoAprobacionConContrato(reservaId) {
     const emailSender = new EmailSender();
     const contractGenerator = new ContractGenerator();
 
-    // Obtener datos de la reserva
+    // obtener datos reserva
     const reserva = await ReservarCuarto.findById(reservaId);
     if (!reserva) {
-      console.log('❌ Reserva no encontrada');
+      console.log('Reserva no encontrada');
       return;
     }
 
-    // Obtener datos de la habitación
+    // obtener datos habitacion
     const habitacion = await InformacionModel.findById(reserva.habitacionId);
     if (!habitacion) {
-      console.log('❌ Habitación no encontrada');
+      console.log('Habitación no encontrada');
       return;
     }
 
@@ -49,7 +49,7 @@ async function enviarCorreoAprobacionConContrato(reservaId) {
       propiedad: habitacion.direccion
     });
 
-    // Preparar datos para el contrato (APROBACIÓN)
+    // prepara datos
     const clientData = {
       nombre: reserva.nombre,
       edad: reserva.edad.toString(),
@@ -72,11 +72,11 @@ async function enviarCorreoAprobacionConContrato(reservaId) {
         : []
     };
 
-    console.log('📄 Generando contrato...');
+    console.log('Generando contrato...');
     const contractPath = await contractGenerator.generateRentalContract(clientData, propertyData);
-    console.log(`✅ Contrato generado: ${contractPath}`);
+    console.log(`Contrato generado: ${contractPath}`);
 
-    // Preparar detalles para el correo de APROBACIÓN
+    // manda detalles de correo
     const contractDetails = {
       property_name: `${propertyData.property_type} - ${propertyData.property_address}`,
       property_address: propertyData.property_address,
@@ -88,7 +88,7 @@ async function enviarCorreoAprobacionConContrato(reservaId) {
 
     const bankDetails = propertyData.bankDetails;
 
-    console.log('📧 Enviando correo de APROBACIÓN con contrato...');
+    console.log('Enviando correo de APROBACIÓN con contrato...');
     const [success, info] = await emailSender.sendAcceptanceEmail(
       reserva.email,
       reserva.nombre,
@@ -98,44 +98,44 @@ async function enviarCorreoAprobacionConContrato(reservaId) {
     );
 
     if (success) {
-      console.log('✅ Correo de APROBACIÓN enviado exitosamente');
+      console.log('Correo de APROBACIÓN enviado exitosamente');
     } else {
-      console.log('❌ Error al enviar correo de aprobación:', info);
+      console.log('Error al enviar correo de aprobación:', info);
     }
 
   } catch (error) {
-    console.error('💥 ERROR en enviarCorreoAprobacionConContrato:', error.message);
+    console.error('ERROR en enviarCorreoAprobacionConContrato:', error.message);
   }
 }
 
-// FUNCIÓN para enviar correo de RECHAZO
+// enviar correo rechazo
 async function enviarCorreoRechazo(reservaId, motivoRechazo = '') {
-  console.log(`🔍 Iniciando envío de correo de RECHAZO para reserva: ${reservaId}`);
+  console.log(`Iniciando envío de correo de RECHAZO para reserva: ${reservaId}`);
   
   if (!libreriaCargada) {
-    console.log('❌ Librerías de correo no disponibles');
+    console.log('Librerías de correo no disponibles');
     return;
   }
 
   try {
     const emailSender = new EmailSender();
 
-    // Obtener datos de la reserva
+    // obtener datos de reserva
     const reserva = await ReservarCuarto.findById(reservaId);
     if (!reserva) {
-      console.log('❌ Reserva no encontrada');
+      console.log('Reserva no encontrada');
       return;
     }
 
-    console.log('✅ Datos para rechazo:', {
+    console.log('Datos para rechazo:', {
       cliente: reserva.nombre,
       email: reserva.email
     });
 
-    // Motivo de rechazo (si no se proporciona, usar uno por defecto)
+    // motivo del rechazo
     const motivo = motivoRechazo || 'No se pudo procesar su solicitud en este momento';
 
-    console.log('📧 Enviando correo de RECHAZO...');
+    console.log('Enviando correo de RECHAZO...');
     const [success, info] = await emailSender.sendRejectionEmail(
       reserva.email,
       reserva.nombre,
@@ -143,20 +143,20 @@ async function enviarCorreoRechazo(reservaId, motivoRechazo = '') {
     );
 
     if (success) {
-      console.log('✅ Correo de RECHAZO enviado exitosamente');
+      console.log('Correo de RECHAZO enviado exitosamente');
     } else {
-      console.log('❌ Error al enviar correo de rechazo:', info);
+      console.log('Error al enviar correo de rechazo:', info);
     }
 
   } catch (error) {
-    console.error('💥 ERROR en enviarCorreoRechazo:', error.message);
+    console.error('ERROR en enviarCorreoRechazo:', error.message);
   }
 }
 
 class ReservarCuartoController {
   async crearReserva(req, res) {
     try {
-      console.log('📝 Creando nueva reserva...');
+      console.log('Creando nueva reserva...');
       const datosReserva = req.body;
       const reserva = await ReservarCuartoService.crearReserva(datosReserva);
       
@@ -166,7 +166,7 @@ class ReservarCuartoController {
         data: reserva
       });
     } catch (error) {
-      console.error('❌ Error al crear reserva:', error);
+      console.error('Error al crear reserva:', error);
       return res.status(500).json({
         success: false,
         message: error.message
@@ -184,7 +184,7 @@ class ReservarCuartoController {
         data: reservas
       });
     } catch (error) {
-      console.error('❌ Error al obtener reservas del arrendador:', error);
+      console.error('Error al obtener reservas del arrendador:', error);
       return res.status(500).json({
         success: false,
         message: error.message
@@ -202,7 +202,7 @@ class ReservarCuartoController {
         data: reservas
       });
     } catch (error) {
-      console.error('❌ Error al obtener reservas del arrendatario:', error);
+      console.error('Error al obtener reservas del arrendatario:', error);
       return res.status(500).json({
         success: false,
         message: error.message
@@ -215,29 +215,29 @@ class ReservarCuartoController {
       const { id } = req.params;
       const { estado, motivoRechazo } = req.body;
       
-      console.log(`🔄 Actualizando estado de reserva ${id} a:`, estado);
+      console.log(`Actualizando estado de reserva ${id} a:`, estado);
       
-      // 1. Actualizar el estado de la reserva
+      // actualizar estado de reserva
       const reservaActualizada = await ReservarCuartoService.actualizarEstadoReserva(id, estado);
       
-      // 2. Enviar correo según el estado
+      // enviar correo segun el false y true
       if (estado === true) {
-        // APROBACIÓN - enviar correo con contrato
+        // aprobado
         try {
-          console.log('🚀 Enviando correo de APROBACIÓN con contrato...');
+          console.log('Enviando correo de APROBACIÓN con contrato...');
           await enviarCorreoAprobacionConContrato(id);
-          console.log('✅ Proceso de aprobación completado');
+          console.log('Proceso de aprobación completado');
         } catch (emailError) {
-          console.warn('⚠️ No se pudo enviar correo de aprobación:', emailError.message);
+          console.warn('No se pudo enviar correo de aprobación:', emailError.message);
         }
       } else if (estado === false) {
-        // RECHAZO - enviar correo de rechazo
+        // rechazado
         try {
-          console.log('🚀 Enviando correo de RECHAZO...');
+          console.log('Enviando correo de RECHAZO...');
           await enviarCorreoRechazo(id, motivoRechazo);
-          console.log('✅ Proceso de rechazo completado');
+          console.log('Proceso de rechazo completado');
         } catch (emailError) {
-          console.warn('⚠️ No se pudo enviar correo de rechazo:', emailError.message);
+          console.warn('No se pudo enviar correo de rechazo:', emailError.message);
         }
       }
       
