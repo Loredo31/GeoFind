@@ -1,11 +1,11 @@
-// services/datos_cliente_service.dart
+
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class DatosClienteService {
   static const String baseUrl = 'http://localhost:3000/api/datos-cliente';
 
-  // Obtener usuario por ID - GET /api/datos-cliente/:id
+ 
   static Future<Map<String, dynamic>> obtenerUsuario(String id) async {
     try {
       final response = await http.get(
@@ -20,7 +20,7 @@ class DatosClienteService {
     }
   }
 
-  // Actualizar usuario - PUT /api/datos-cliente/:id
+
   static Future<Map<String, dynamic>> actualizarUsuario(String id, Map<String, dynamic> datosUsuario) async {
     try {
       final response = await http.put(
@@ -36,7 +36,6 @@ class DatosClienteService {
     }
   }
 
-  // Obtener usuarios por rol - GET /api/datos-cliente/rol/:rol
   static Future<Map<String, dynamic>> obtenerUsuariosPorRol(String rol) async {
     try {
       final response = await http.get(

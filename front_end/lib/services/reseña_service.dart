@@ -1,11 +1,11 @@
-// services/resena_service.dart
+
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class ResenaService {
   static const String baseUrl = 'http://localhost:3000/api/resena';
 
-  // Crear reseña - POST /api/resena
+ 
   static Future<Map<String, dynamic>> crearResena(Map<String, dynamic> datosResena) async {
     try {
       final response = await http.post(
@@ -21,7 +21,6 @@ class ResenaService {
     }
   }
 
-  // Obtener reseñas por habitación - GET /api/resena/habitacion/:habitacionId
   static Future<Map<String, dynamic>> obtenerResenasHabitacion(String habitacionId) async {
     try {
       final response = await http.get(
@@ -36,7 +35,6 @@ class ResenaService {
     }
   }
 
-  // Obtener todas las reseñas - GET /api/resena
   static Future<Map<String, dynamic>> obtenerTodasLasResenas() async {
     try {
       final response = await http.get(

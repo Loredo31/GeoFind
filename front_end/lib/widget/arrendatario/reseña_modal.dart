@@ -60,7 +60,7 @@ class _ResenaModalState extends State<ResenaModal> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Reseña creada exitosamente'),
-            backgroundColor: Colors.purple, // CAMBIADO A MORADO
+            backgroundColor: Colors.purple, 
           ),
         );
         _limpiarFormulario();
@@ -118,7 +118,7 @@ class _ResenaModalState extends State<ResenaModal> {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      backgroundColor: Colors.purple[50], // CAMBIADO A MORADO CLARO
+      backgroundColor: Colors.purple[50], 
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       insetPadding: const EdgeInsets.all(20),
       child: ConstrainedBox(
@@ -140,11 +140,11 @@ class _ResenaModalState extends State<ResenaModal> {
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
-                      color: Colors.purple[800], // CAMBIADO A MORADO
+                      color: Colors.purple[800], 
                     ),
                   ),
                   IconButton(
-                    icon: Icon(Icons.close, color: Colors.purple[700]), // CAMBIADO A MORADO
+                    icon: Icon(Icons.close, color: Colors.purple[700]), 
                     onPressed: () => Navigator.pop(context),
                   ),
                 ],
@@ -152,15 +152,15 @@ class _ResenaModalState extends State<ResenaModal> {
               
               const SizedBox(height: 16),
               
-              // Botones para cambiar entre vistas - CAMBIADOS A MORADO
+             
               Row(
                 children: [
                   Expanded(
                     child: ElevatedButton(
                       onPressed: _verResenas ? () => setState(() => _verResenas = false) : null,
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: _verResenas ? Colors.purple[100] : Colors.purple[700], // CAMBIADO
-                        foregroundColor: _verResenas ? Colors.purple[700] : Colors.white, // CAMBIADO
+                        backgroundColor: _verResenas ? Colors.purple[100] : Colors.purple[700], 
+                        foregroundColor: _verResenas ? Colors.purple[700] : Colors.white, 
                         padding: const EdgeInsets.symmetric(vertical: 12),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
@@ -177,8 +177,8 @@ class _ResenaModalState extends State<ResenaModal> {
                         _cargarResenas();
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: _verResenas ? Colors.purple[700] : Colors.purple[100], // CAMBIADO
-                        foregroundColor: _verResenas ? Colors.white : Colors.purple[700], // CAMBIADO
+                        backgroundColor: _verResenas ? Colors.purple[700] : Colors.purple[100],
+                        foregroundColor: _verResenas ? Colors.white : Colors.purple[700], 
                         padding: const EdgeInsets.symmetric(vertical: 12),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
@@ -216,9 +216,9 @@ class _ResenaModalState extends State<ResenaModal> {
                   border: OutlineInputBorder(),
                   filled: true,
                   fillColor: Colors.white,
-                  labelStyle: TextStyle(color: Colors.purple[700]), // CAMBIADO
+                  labelStyle: TextStyle(color: Colors.purple[700]), 
                   focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.purple[700]!), // CAMBIADO
+                    borderSide: BorderSide(color: Colors.purple[700]!), 
                   ),
                 ),
                 validator: (value) {
@@ -239,9 +239,9 @@ class _ResenaModalState extends State<ResenaModal> {
                   filled: true,
                   fillColor: Colors.white,
                   hintText: 'Ej: 6',
-                  labelStyle: TextStyle(color: Colors.purple[700]), // CAMBIADO
+                  labelStyle: TextStyle(color: Colors.purple[700]), 
                   focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.purple[700]!), // CAMBIADO
+                    borderSide: BorderSide(color: Colors.purple[700]!), 
                   ),
                 ),
                 keyboardType: TextInputType.number,
@@ -267,9 +267,9 @@ class _ResenaModalState extends State<ResenaModal> {
                   filled: true,
                   fillColor: Colors.white,
                   hintText: 'Comparte tu experiencia...',
-                  labelStyle: TextStyle(color: Colors.purple[700]), // CAMBIADO
+                  labelStyle: TextStyle(color: Colors.purple[700]), 
                   focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.purple[700]!), // CAMBIADO
+                    borderSide: BorderSide(color: Colors.purple[700]!), 
                   ),
                 ),
                 maxLines: 4,
@@ -286,13 +286,13 @@ class _ResenaModalState extends State<ResenaModal> {
               
               const SizedBox(height: 24),
               
-              // BOTÓN ENVIAR RESEÑA - CAMBIADO A MORADO
+             
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: _isLoading ? null : _crearResena,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.purple[700], // CAMBIADO A MORADO
+                    backgroundColor: Colors.purple[700], 
                     foregroundColor: Colors.white,
                     padding: const EdgeInsets.symmetric(vertical: 16),
                     shape: RoundedRectangleBorder(
@@ -335,7 +335,7 @@ class _ResenaModalState extends State<ResenaModal> {
             style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.bold,
-              color: Colors.purple[700], // CAMBIADO A MORADO
+              color: Colors.purple[700], 
             ),
           ),
           
@@ -347,12 +347,12 @@ class _ResenaModalState extends State<ResenaModal> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.reviews, size: 64, color: Colors.purple[300]), // CAMBIADO
+                    Icon(Icons.reviews, size: 64, color: Colors.purple[300]), 
                     const SizedBox(height: 16),
                     Text(
                       'No hay reseñas aún',
                       style: TextStyle(
-                        color: Colors.purple[600], // CAMBIADO
+                        color: Colors.purple[600], 
                         fontSize: 16,
                       ),
                     ),
@@ -360,7 +360,7 @@ class _ResenaModalState extends State<ResenaModal> {
                     Text(
                       'Sé el primero en compartir tu experiencia',
                       style: TextStyle(
-                        color: Colors.purple[500], // CAMBIADO
+                        color: Colors.purple[500], 
                         fontSize: 14,
                       ),
                     ),
@@ -378,7 +378,7 @@ class _ResenaModalState extends State<ResenaModal> {
                   
                   return Card(
                     margin: const EdgeInsets.only(bottom: 12),
-                    color: Colors.purple[50], // CAMBIADO A MORADO CLARO
+                    color: Colors.purple[50], 
                     child: Padding(
                       padding: const EdgeInsets.all(16),
                       child: Column(
@@ -392,7 +392,7 @@ class _ResenaModalState extends State<ResenaModal> {
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 16,
-                                  color: Colors.purple[800], // CAMBIADO
+                                  color: Colors.purple[800], 
                                 ),
                               ),
                               Text(
@@ -409,12 +409,12 @@ class _ResenaModalState extends State<ResenaModal> {
                           
                           Row(
                             children: [
-                              Icon(Icons.calendar_today, size: 14, color: Colors.purple[600]), // CAMBIADO
+                              Icon(Icons.calendar_today, size: 14, color: Colors.purple[600]), 
                               const SizedBox(width: 4),
                               Text(
                                 '${resena['duracionRenta']} meses',
                                 style: TextStyle(
-                                  color: Colors.purple[600], // CAMBIADO
+                                  color: Colors.purple[600],
                                   fontSize: 12,
                                 ),
                               ),

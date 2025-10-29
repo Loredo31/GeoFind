@@ -40,7 +40,7 @@ class _SearchFilterWidgetState extends State<SearchFilterWidget> {
   String _tipoCuartoSeleccionado = 'Todos';
   int? _precioMinSeleccionado;
   int? _precioMaxSeleccionado;
-  List<String> _serviciosSeleccionados = []; // Cambiado a List<String>
+  List<String> _serviciosSeleccionados = []; 
 
   void _aplicarFiltros() {
     final filtros = {
@@ -56,12 +56,12 @@ class _SearchFilterWidgetState extends State<SearchFilterWidget> {
   }
 
   void _mostrarFiltrosAvanzados(BuildContext context) {
-    // Variables temporales para el estado del diálogo
+    
     String zonaTemp = _zonaSeleccionada;
     String tipoCuartoTemp = _tipoCuartoSeleccionado;
     int? precioMinTemp = _precioMinSeleccionado;
     int? precioMaxTemp = _precioMaxSeleccionado;
-    List<String> serviciosTemp = List.from(_serviciosSeleccionados); // Cambiado a List<String>
+    List<String> serviciosTemp = List.from(_serviciosSeleccionados); 
 
     showDialog(
       context: context,
@@ -101,7 +101,7 @@ class _SearchFilterWidgetState extends State<SearchFilterWidget> {
                     child: SingleChildScrollView(
                       child: Column(
                         children: [
-                          // Filtro de Zona
+                          
                           _buildFilterSection(
                             'Ubicación',
                             Icons.location_on,
@@ -132,7 +132,7 @@ class _SearchFilterWidgetState extends State<SearchFilterWidget> {
                           ),
                           const SizedBox(height: 20),
 
-                          // Filtro de Tipo de Cuarto
+                          
                           _buildFilterSection(
                             'Tipo de Habitación',
                             Icons.hotel,
@@ -198,7 +198,7 @@ class _SearchFilterWidgetState extends State<SearchFilterWidget> {
                                 ),
                                 const SizedBox(height: 8),
 
-                                // Mostrar mensaje si hay error
+                               
                                 if (precioMinTemp != null &&
                                     precioMaxTemp != null &&
                                     precioMinTemp! >= precioMaxTemp!)
@@ -227,7 +227,7 @@ class _SearchFilterWidgetState extends State<SearchFilterWidget> {
 
                           const SizedBox(height: 20),
                           
-                          // Filtro de Servicios usando ServicesCheckboxGroup
+                         
                           _buildFilterSection(
                             'Servicios Incluidos',
                             Icons.room_service,
@@ -247,7 +247,7 @@ class _SearchFilterWidgetState extends State<SearchFilterWidget> {
 
                   const SizedBox(height: 20),
 
-                  // Botones de acción
+                 
                   Row(
                     children: [
                       Expanded(
@@ -258,7 +258,7 @@ class _SearchFilterWidgetState extends State<SearchFilterWidget> {
                               tipoCuartoTemp = 'Todos';
                               precioMinTemp = null;
                               precioMaxTemp = null;
-                              serviciosTemp.clear(); // Limpiar servicios
+                              serviciosTemp.clear(); 
                             });
                           },
                           style: OutlinedButton.styleFrom(
@@ -276,7 +276,7 @@ class _SearchFilterWidgetState extends State<SearchFilterWidget> {
                       Expanded(
                         child: ElevatedButton(
                           onPressed: () {
-                            // Validar precios antes de aplicar
+                            
                             if (precioMinTemp != null &&
                                 precioMaxTemp != null &&
                                 precioMinTemp! >= precioMaxTemp!) {
@@ -292,7 +292,7 @@ class _SearchFilterWidgetState extends State<SearchFilterWidget> {
                               return;
                             }
 
-                            // Actualizar el estado principal con los valores temporales
+                           
                             setState(() {
                               _zonaSeleccionada = zonaTemp;
                               _tipoCuartoSeleccionado = tipoCuartoTemp;

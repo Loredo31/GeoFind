@@ -20,21 +20,21 @@ class HabitacionCard extends StatelessWidget {
         onTap: onTap,
         borderRadius: BorderRadius.circular(12),
         child: Container(
-          // Ajustamos la altura para mejor proporción con 3 cards
+          
           height: 220,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Imagen de la habitación - MODIFICADO para usar fotografias
+              
               Expanded(child: _buildImagenHabitacion()),
 
-              // Información de la habitación
+              
               Padding(
                 padding: const EdgeInsets.all(8),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Precio
+                   
                     Text(
                       '\$${habitacion['costo'] ?? '0'}/mes',
                       style: const TextStyle(
@@ -47,7 +47,7 @@ class HabitacionCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 4),
 
-                    // Zona
+                  
                     Row(
                       children: [
                         Icon(
@@ -71,7 +71,7 @@ class HabitacionCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 2),
 
-                    // Tipo y capacidad
+                   
                     Row(
                       children: [
                         Icon(Icons.people, size: 12, color: Colors.grey[600]),
@@ -90,7 +90,7 @@ class HabitacionCard extends StatelessWidget {
                       ],
                     ),
 
-                    // Servicios (si existen) - Solo mostrar si hay espacio
+                  
                     if (habitacion['servicios'] != null &&
                         (habitacion['servicios'] as List).isNotEmpty)
                       Container(
@@ -139,12 +139,12 @@ class HabitacionCard extends StatelessWidget {
     );
   }
 
-  // Método para construir la imagen de la habitación
+
   Widget _buildImagenHabitacion() {
     final fotografias = habitacion['fotografias'];
     String? imageData;
 
-    // Obtener la primera imagen del array fotografias
+
     if (fotografias is List && fotografias.isNotEmpty) {
       imageData = fotografias.first.toString();
     } else if (fotografias is String) {
@@ -154,7 +154,7 @@ class HabitacionCard extends StatelessWidget {
     ImageProvider imageProvider;
 
     if (imageData == null || imageData.isEmpty) {
-      // Si no hay imagen, mostrar placeholder
+    
       return Container(
         width: double.infinity,
         decoration: BoxDecoration(
@@ -169,7 +169,7 @@ class HabitacionCard extends StatelessWidget {
             Center(
               child: Icon(Icons.home_work, size: 40, color: Colors.green[300]),
             ),
-            // Badge de tipo de cuarto
+            
             Positioned(
               top: 6,
               right: 6,
@@ -195,17 +195,14 @@ class HabitacionCard extends StatelessWidget {
     }
 
     try {
-      // Determinar el tipo de imagen (base64 o URL)
+      
       if (imageData.startsWith('data:image')) {
-        // Es base64 con prefijo
         final base64String = imageData.split(',').last;
         final bytes = base64.decode(base64String);
         imageProvider = MemoryImage(bytes);
       } else if (imageData.startsWith('http')) {
-        // Es URL
         imageProvider = NetworkImage(imageData);
       } else {
-        // Asume que es base64 sin prefijo
         final bytes = base64.decode(imageData);
         imageProvider = MemoryImage(bytes);
       }
@@ -220,12 +217,11 @@ class HabitacionCard extends StatelessWidget {
           image: DecorationImage(
             image: imageProvider,
             fit:
-                BoxFit.cover, // La imagen se ajusta para cubrir todo el espacio
+                BoxFit.cover, 
           ),
         ),
         child: Stack(
           children: [
-            // Badge de tipo de cuarto
             Positioned(
               top: 6,
               right: 6,
@@ -249,7 +245,6 @@ class HabitacionCard extends StatelessWidget {
         ),
       );
     } catch (e) {
-      // En caso de error al cargar la imagen
       print('Error cargando imagen en HabitacionCard: $e');
       return Container(
         width: double.infinity,
@@ -275,7 +270,6 @@ class HabitacionCard extends StatelessWidget {
                 ],
               ),
             ),
-            // Badge de tipo de cuarto
             Positioned(
               top: 6,
               right: 6,
@@ -310,7 +304,6 @@ class HabitacionCard extends StatelessWidget {
     } else if (tipo == 'compartido' || tipo == 'compartida') {
       return capacidad.isNotEmpty ? 'Compartido ($capacidad)' : 'Compartido';
     } else {
-      // Por si acaso llega algún otro valor inesperado
       return tipo;
     }
   }
@@ -324,7 +317,7 @@ class HabitacionCard extends StatelessWidget {
     } else if (tipoLower == 'compartido' || tipoLower == 'compartida') {
       return 'Cmp';
     } else {
-      return 'Ind'; // Valor por defecto
+      return 'Ind';
     }
   }
 }

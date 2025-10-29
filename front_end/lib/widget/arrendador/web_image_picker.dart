@@ -1,5 +1,4 @@
 import 'dart:async';
-//import 'dart:convert';
 import 'dart:html' as html;
 import 'package:flutter/material.dart';
 
@@ -23,7 +22,6 @@ class WebImagePicker extends StatelessWidget {
   }
 }
 
-// Función global para manejar la selección de archivos
 Future<List<String>> pickImagesWeb() async {
   final completer = Completer<List<String>>();
   
@@ -43,7 +41,6 @@ Future<List<String>> pickImagesWeb() async {
         
         reader.onLoadEnd.listen((e) {
           if (reader.result != null) {
-            // Convertir a base64 (remover el prefijo data:image/...;base64,)
             final String base64 = reader.result as String;
             final String pureBase64 = base64.split(',').last;
             base64Images.add(pureBase64);
@@ -60,7 +57,6 @@ Future<List<String>> pickImagesWeb() async {
       completer.complete([]);
     }
     
-    // Limpiar el input
     input.remove();
   });
 

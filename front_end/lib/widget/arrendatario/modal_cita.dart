@@ -314,13 +314,10 @@ class _ModalCitaState extends State<ModalCita> {
           'hora': _horaSeleccionada,
           'habitacionId': widget.habitacion['_id'],
           'arrendatarioId': widget.usuario.id,
-          //'nombreArrendador': widget.habitacion['nombreArrendador'],
           'direccionHabitacion': widget.habitacion['direccion'],
-          //'tipoHabitacion': widget.habitacion['tipo'],
-          'estado': null, // Empieza como null (pendiente)
+          'estado': null, 
         };
 
-        // ENVIAR AL BACKEND
         final response = await CitaService.crearCita(citaData);
 
         setState(() => _isLoading = false);
@@ -347,8 +344,8 @@ class _ModalCitaState extends State<ModalCita> {
         actions: [
           TextButton(
             onPressed: () {
-              Navigator.pop(context); // Cerrar diálogo
-              Navigator.pop(context); // Cerrar modal
+              Navigator.pop(context);
+              Navigator.pop(context); 
             },
             child: const Text('Aceptar', style: TextStyle(color: Colors.orange)),
           ),

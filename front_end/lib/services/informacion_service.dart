@@ -1,11 +1,10 @@
-// services/informacion_service.dart
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class InformacionService {
   static const String baseUrl = 'http://localhost:3000/api/informacion';
 
-  // Crear información - POST /api/informacion
+
   static Future<Map<String, dynamic>> crearInformacion(Map<String, dynamic> datos) async {
     try {
       final response = await http.post(
@@ -21,7 +20,7 @@ class InformacionService {
     }
   }
 
-  // Obtener información por arrendador - GET /api/informacion/arrendador/:arrendadorId
+  
   static Future<Map<String, dynamic>> obtenerInformacionArrendador(String arrendadorId) async {
     try {
       final response = await http.get(
@@ -36,7 +35,6 @@ class InformacionService {
     }
   }
 
-  // Obtener todas las habitaciones - GET /api/informacion
   static Future<Map<String, dynamic>> obtenerTodasLasHabitaciones() async {
     try {
       final response = await http.get(
@@ -51,7 +49,7 @@ class InformacionService {
     }
   }
 
-  // Actualizar información - PUT /api/informacion/:id
+
   static Future<Map<String, dynamic>> actualizarInformacion(String id, Map<String, dynamic> datos) async {
     try {
       final response = await http.put(
@@ -67,7 +65,7 @@ class InformacionService {
     }
   }
 
-  // Eliminar información - DELETE /api/informacion/:id
+
   static Future<Map<String, dynamic>> eliminarInformacion(String id) async {
     try {
       final response = await http.delete(

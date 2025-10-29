@@ -14,7 +14,7 @@ class ModalReserva extends StatefulWidget {
     this.onAgendarCita,
   }) : super(key: key);
 
-  // MÉTODO ESTÁTICO para crear el botón de Agendar Cita
+
   static Widget botonAgendarCita({required VoidCallback onPressed}) {
     return Container(
       height: 60,
@@ -427,7 +427,7 @@ class _ModalReservaState extends State<ModalReserva> {
           'costo': widget.habitacion['costo'],
           'nombreArrendador': widget.habitacion['nombreArrendador'],
           'numeroContrato': 'CTR-${DateTime.now().millisecondsSinceEpoch}',
-          'estado': null, // IMPORTANTE: empieza como null
+          'estado': null, 
           'habitacionId': widget.habitacion['_id'],
           'arrendatarioId': widget.usuario.id,
           'datosBancarios': {
@@ -435,7 +435,7 @@ class _ModalReservaState extends State<ModalReserva> {
           },
         };
 
-        // ENVIAR AL BACKEND
+
         final response = await ReservarCuartoService.crearReserva(reservaData);
 
         setState(() {
@@ -466,8 +466,8 @@ class _ModalReservaState extends State<ModalReserva> {
         actions: [
           TextButton(
             onPressed: () {
-              Navigator.pop(context); // Cerrar diálogo
-              Navigator.pop(context); // Cerrar modal
+              Navigator.pop(context); 
+              Navigator.pop(context); 
             },
             child: const Text('Aceptar', style: TextStyle(color: Colors.green)),
           ),

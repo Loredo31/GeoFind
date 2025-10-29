@@ -30,7 +30,6 @@ class FormCard extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Header del formulario
               Row(
                 children: [
                   Icon(
@@ -69,8 +68,6 @@ class FormCard extends StatelessWidget {
               const SizedBox(height: 8),
               Divider(color: Colors.green[200]),
               const SizedBox(height: 20),
-              
-              // Contenido del formulario
               child,
             ],
           ),
