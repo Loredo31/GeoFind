@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:front_end/services/proxy_service.dart';
 import 'dart:convert';
 
 class HabitacionCard extends StatelessWidget {
@@ -20,21 +21,16 @@ class HabitacionCard extends StatelessWidget {
         onTap: onTap,
         borderRadius: BorderRadius.circular(12),
         child: Container(
-          
           height: 220,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              
               Expanded(child: _buildImagenHabitacion()),
-
-              
               Padding(
                 padding: const EdgeInsets.all(8),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                   
                     Text(
                       '\$${habitacion['costo'] ?? '0'}/mes',
                       style: const TextStyle(
@@ -46,8 +42,6 @@ class HabitacionCard extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                     ),
                     const SizedBox(height: 4),
-
-                  
                     Row(
                       children: [
                         Icon(
@@ -70,8 +64,6 @@ class HabitacionCard extends StatelessWidget {
                       ],
                     ),
                     const SizedBox(height: 2),
-
-                   
                     Row(
                       children: [
                         Icon(Icons.people, size: 12, color: Colors.grey[600]),
@@ -89,8 +81,6 @@ class HabitacionCard extends StatelessWidget {
                         ),
                       ],
                     ),
-
-                  
                     if (habitacion['servicios'] != null &&
                         (habitacion['servicios'] as List).isNotEmpty)
                       Container(
@@ -139,160 +129,126 @@ class HabitacionCard extends StatelessWidget {
     );
   }
 
-
   Widget _buildImagenHabitacion() {
-    final fotografias = habitacion['fotografias'];
-    String? imageData;
-
-
-    if (fotografias is List && fotografias.isNotEmpty) {
-      imageData = fotografias.first.toString();
-    } else if (fotografias is String) {
-      imageData = fotografias;
-    }
-
-    ImageProvider imageProvider;
-
-    if (imageData == null || imageData.isEmpty) {
+    final String habitacionId = habitacion['_id'] ?? '';
     
-      return Container(
-        width: double.infinity,
-        decoration: BoxDecoration(
-          borderRadius: const BorderRadius.only(
-            topLeft: Radius.circular(12),
-            topRight: Radius.circular(12),
-          ),
-          color: Colors.green[100],
-        ),
-        child: Stack(
-          children: [
-            Center(
-              child: Icon(Icons.home_work, size: 40, color: Colors.green[300]),
-            ),
-            
-            Positioned(
-              top: 6,
-              right: 6,
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                decoration: BoxDecoration(
-                  color: Colors.green[700],
-                  borderRadius: BorderRadius.circular(6),
-                ),
-                child: Text(
-                  _getTipoAbreviado(habitacion['tipo'] ?? 'Ind'),
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 9,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      );
+    if (habitacionId.isEmpty) {
+      return _buildPlaceholderImage();
     }
 
-    try {
-      
-      if (imageData.startsWith('data:image')) {
-        final base64String = imageData.split(',').last;
-        final bytes = base64.decode(base64String);
-        imageProvider = MemoryImage(bytes);
-      } else if (imageData.startsWith('http')) {
-        imageProvider = NetworkImage(imageData);
-      } else {
-        final bytes = base64.decode(imageData);
-        imageProvider = MemoryImage(bytes);
-      }
+//FutureBuilder que llama al servicio del proxy
+    return FutureBuilder<String>(
+      future: ProxyService.getFotoPortada(habitacionId),
+      //llamamos la imagen de proxy
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return _buildLoadingImage();
+        }
+        
+        if (snapshot.hasError || !snapshot.hasData) {
+          print('Error cargando imagen del proxy: ${snapshot.error}');
+          return _buildPlaceholderImage();
+        }
+        
+        //contiene la imagen 
+        final imageData = snapshot.data!;
+        
+        return Container(
+          width: double.infinity,
+          decoration: BoxDecoration(
+            borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(12),
+              topRight: Radius.circular(12),
+            ),
+            image: DecorationImage(
+              image: MemoryImage(base64.decode(imageData.split(',').last)),
+              //proxy muestra la imagen
+              fit: BoxFit.cover,
+            ),
+          ),
+          child: Stack(
+            children: [
+              Positioned(
+                top: 6,
+                right: 6,
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                  decoration: BoxDecoration(
+                    color: Colors.green[700],
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                  child: Text(
+                    _getTipoAbreviado(habitacion['tipo'] ?? 'Ind'),
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 9,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
 
-      return Container(
-        width: double.infinity,
-        decoration: BoxDecoration(
-          borderRadius: const BorderRadius.only(
-            topLeft: Radius.circular(12),
-            topRight: Radius.circular(12),
-          ),
-          image: DecorationImage(
-            image: imageProvider,
-            fit:
-                BoxFit.cover, 
-          ),
+  Widget _buildLoadingImage() {
+    return Container(
+      width: double.infinity,
+      decoration: BoxDecoration(
+        borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(12),
+          topRight: Radius.circular(12),
         ),
-        child: Stack(
-          children: [
-            Positioned(
-              top: 6,
-              right: 6,
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                decoration: BoxDecoration(
-                  color: Colors.green[700],
-                  borderRadius: BorderRadius.circular(6),
-                ),
-                child: Text(
-                  _getTipoAbreviado(habitacion['tipo'] ?? 'Ind'),
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 9,
-                    fontWeight: FontWeight.bold,
-                  ),
+        color: Colors.grey[200],
+      ),
+      child: Center(
+        child: CircularProgressIndicator(
+          valueColor: AlwaysStoppedAnimation<Color>(Colors.green[700]!),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildPlaceholderImage() {
+    return Container(
+      width: double.infinity,
+      decoration: BoxDecoration(
+        borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(12),
+          topRight: Radius.circular(12),
+        ),
+        color: Colors.green[100],
+      ),
+      child: Stack(
+        children: [
+          Center(
+            child: Icon(Icons.home_work, size: 40, color: Colors.green[300]),
+          ),
+          Positioned(
+            top: 6,
+            right: 6,
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+              decoration: BoxDecoration(
+                color: Colors.green[700],
+                borderRadius: BorderRadius.circular(6),
+              ),
+              child: Text(
+                _getTipoAbreviado(habitacion['tipo'] ?? 'Ind'),
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 9,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
             ),
-          ],
-        ),
-      );
-    } catch (e) {
-      print('Error cargando imagen en HabitacionCard: $e');
-      return Container(
-        width: double.infinity,
-        decoration: BoxDecoration(
-          borderRadius: const BorderRadius.only(
-            topLeft: Radius.circular(12),
-            topRight: Radius.circular(12),
           ),
-          color: Colors.red[100],
-        ),
-        child: Stack(
-          children: [
-            Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.broken_image, color: Colors.red, size: 24),
-                  const SizedBox(height: 4),
-                  Text(
-                    'Error imagen',
-                    style: TextStyle(color: Colors.red, fontSize: 9),
-                  ),
-                ],
-              ),
-            ),
-            Positioned(
-              top: 6,
-              right: 6,
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                decoration: BoxDecoration(
-                  color: Colors.green[700],
-                  borderRadius: BorderRadius.circular(6),
-                ),
-                child: Text(
-                  _getTipoAbreviado(habitacion['tipo'] ?? 'Ind'),
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 9,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      );
-    }
+        ],
+      ),
+    );
   }
 
   String _getTipoText(Map<String, dynamic> habitacion) {

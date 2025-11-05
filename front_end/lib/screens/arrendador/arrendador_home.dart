@@ -7,6 +7,7 @@ import '../auth/login_screen.dart';
 import 'registrar_cuarto.dart';
 import 'dart:convert';
 import '../../widget/arrendador/notifications_widget.dart';
+import '../../services/proxy_service.dart'; 
 
 class ArrendadorHome extends StatefulWidget {
   final Usuario usuario;
@@ -65,58 +66,72 @@ class _ArrendadorHomeState extends State<ArrendadorHome> {
     }
   }
 
-  Widget _buildImagenHabitacion(dynamic fotografias) {
-    String? imageData;
+  Widget _buildImagenHabitacion(dynamic habitacion) {
+    final String habitacionId = habitacion['_id'] ?? '';
 
-    if (fotografias is List && fotografias.isNotEmpty) {
-      imageData = fotografias.first.toString();
-    } else if (fotografias is String) {
-      imageData = fotografias;
+    if (habitacionId.isEmpty) {
+      return _buildPlaceholderHomeImage();
     }
 
-    if (imageData == null || imageData.isEmpty) {
-      return Container(
-        height: 200,
-        width: double.infinity,
-        decoration: BoxDecoration(
-          color: Colors.green[100],
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: Icon(Icons.home_work, size: 60, color: Colors.green[300]),
-      );
-    }
-
-    try {
-      return Container(
-        height: 200,
-        width: double.infinity,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12),
-          image: DecorationImage(
-            image: _getImage(imageData),
-            fit: BoxFit.cover,
+//FutureBuilder que solicita imagen optimizada al proxy
+    return FutureBuilder<String>(
+      future: ProxyService.getFotoPortada(habitacionId),
+      //llama al proxy con la foto escogina y solamente esta foto cargada
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return _buildLoadingHomeImage();
+        }
+        
+        if (snapshot.hasError || !snapshot.hasData) {
+          return _buildPlaceholderHomeImage();
+        }
+        
+        final imageData = snapshot.data!;
+        //contiene la immagen
+        
+        return Container(
+          height: 200,
+          width: double.infinity,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(12),
+            image: DecorationImage(
+              image: MemoryImage(base64.decode(imageData.split(',').last)),
+              //convierte la respuesta del proxi a una imagen
+              fit: BoxFit.cover,
+            ),
           ),
+        );
+      },
+    );
+  }
+
+  // ✅ AGREGAR ESTOS MÉTODOS FALTANTES
+  Widget _buildLoadingHomeImage() {
+    return Container(
+      height: 200,
+      width: double.infinity,
+      decoration: BoxDecoration(
+        color: Colors.grey[200],
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Center(
+        child: CircularProgressIndicator(
+          valueColor: AlwaysStoppedAnimation<Color>(Colors.green[700]!),
         ),
-      );
-    } catch (e) {
-      print('Error cargando imagen: $e');
-      return Container(
-        height: 200,
-        width: double.infinity,
-        decoration: BoxDecoration(
-          color: Colors.red[100],
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(Icons.error, color: Colors.red, size: 40),
-            SizedBox(height: 8),
-            Text('Error cargando imagen', style: TextStyle(color: Colors.red)),
-          ],
-        ),
-      );
-    }
+      ),
+    );
+  }
+
+  Widget _buildPlaceholderHomeImage() {
+    return Container(
+      height: 200,
+      width: double.infinity,
+      decoration: BoxDecoration(
+        color: Colors.green[100],
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Icon(Icons.home_work, size: 60, color: Colors.green[300]),
+    );
   }
 
   void _mostrarDetallesHabitacion(Map<String, dynamic> habitacion) {
@@ -127,6 +142,7 @@ class _ArrendadorHomeState extends State<ArrendadorHome> {
       context: context,
       builder: (context) => StatefulBuilder(
         builder: (context, setState) {
+          //llama las fotografias originales al ver los detalles
           final fotografias = habitacion['fotografias'] ?? [];
           final bool tieneImagenes =
               fotografias is List && fotografias.isNotEmpty;
@@ -194,6 +210,7 @@ class _ArrendadorHomeState extends State<ArrendadorHome> {
                                       borderRadius: BorderRadius.circular(12),
                                       image: DecorationImage(
                                         image: _getImage(fotografias[index]),
+                                        //usa las imagenes originales y no las de el proxy
                                         fit: BoxFit.contain,
                                       ),
                                     ),

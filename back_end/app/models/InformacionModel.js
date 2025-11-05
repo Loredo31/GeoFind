@@ -37,6 +37,7 @@ const informacionSchema = new mongoose.Schema({
   },
   googleMaps: String,
   fotografias: [String],
+  fotoPortada: String,
   costo: {
     type: Number,
     required: true
