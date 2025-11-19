@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const conectarDB = require('./db.conexion');
+const conectarDB = require('./config/db');
 require('dotenv').config();
 
 const app = express();
@@ -80,5 +80,4 @@ const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
   console.log(`🚀 Servidor corriendo en puerto ${PORT}`);
-  console.log(`📊 Conectado a la base de datos: renta_habitaciones`);
 });
