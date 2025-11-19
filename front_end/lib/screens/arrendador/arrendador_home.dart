@@ -7,7 +7,7 @@ import '../auth/login_screen.dart';
 import 'registrar_cuarto.dart';
 import 'dart:convert';
 import '../../widget/arrendador/notifications_widget.dart';
-import '../../services/proxy_service.dart'; 
+import '../../services/portada_service.dart'; 
 
 class ArrendadorHome extends StatefulWidget {
   final Usuario usuario;

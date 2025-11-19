@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const proxyController = require('../controllers/proxyController');
+const proxyController = require('../controllers/portadaController');
 
 router.get('/foto-portada/:habitacionId', proxyController.getFotoPortada);
 

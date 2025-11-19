@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:front_end/services/proxy_service.dart';
+import 'package:front_end/services/portada_service.dart';
 import 'dart:convert';
 
 class HabitacionCard extends StatelessWidget {

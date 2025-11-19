@@ -1,4 +1,4 @@
-const proxyService = require('../services/proxyService');
+const proxyService = require('../services/portadaService.JS');
 
 const proxyController = {
 
