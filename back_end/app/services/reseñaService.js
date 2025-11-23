@@ -38,6 +38,69 @@ class ReseñaService {
     }
   }
 
+async analizarSentimiento(comentario) {
+    // Lista de palabras consideradas positivas
+    const palabrasPositivas = [
+      "excelente",
+      "bueno",
+      "genial",
+      "recomiendo",
+      "perfecto",
+      "maravilloso",
+    ];
+    // Lista de palabras consideradas negativas
+    const palabrasNegativas = [
+      "malo",
+      "terrible",
+      "horrible",
+      "pésimo",
+      "decepcionante",
+      "ruido",
+      "sucio",
+    ];
+
+    // Convertir comentario a minúsculas y dividir en palabras individuales
+    const palabras = comentario.toLowerCase().split(" ");
+    let puntuacion = 0;
+    let intensidad = 0;
+    const tópicos = [];
+
+    // Análisis simple de palabras clave
+    palabras.forEach((palabra) => {
+      // Incrementar puntuación e intensidad si encuentra palabras positivas
+      if (palabrasPositivas.includes(palabra)) {
+        puntuacion += 0.2;
+        intensidad += 0.1;
+      }
+      // Decrementar puntuación e incrementar intensidad si encuentra palabras negativas
+      if (palabrasNegativas.includes(palabra)) {
+        puntuacion -= 0.3;
+        intensidad += 0.2;
+
+        // Identificar tópicos específicos basados en palabras clave
+        if (["ruido", "sucio", "limpio", "limpieza"].includes(palabra)) {
+          tópicos.push({
+            nombre: "limpieza",
+            sentimiento: -0.5,
+            intensidad: 0.7,
+          });
+        }
+      }
+    });
+
+    // Normalizar valores para mantenerlos dentro de rangos esperados
+    puntuacion = Math.max(-1, Math.min(1, puntuacion));
+    intensidad = Math.max(0, Math.min(1, intensidad));
+
+    // Retornar objeto con los resultados del análisis de sentimiento
+    return {
+      puntuacion,
+      intensidad,
+      tópicos: tópicos.length > 0 ? tópicos : [],
+    };
+  }
+
+
   // Método para obtener datos de gráfica de barras dobles
   async obtenerDatosGraficaBarrasDobles(habitacionId) {
     try {
