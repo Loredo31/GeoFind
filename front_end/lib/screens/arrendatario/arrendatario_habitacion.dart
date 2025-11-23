@@ -4,7 +4,8 @@ import 'dart:html' as html;
 import 'package:front_end/models/usuario.dart';
 import 'package:front_end/widget/arrendatario/modal_reserva.dart';
 import 'package:front_end/widget/arrendatario/modal_cita.dart';
-import 'package:front_end/widget/arrendatario/reseña_modal.dart';
+//import 'package:front_end/widget/arrendatario/reseña_modal.dart';
+import 'package:front_end/widget/arrendatario/agregar_resena.dart';
 
 class DetalleHabitacionScreen extends StatefulWidget {
   final Map<String, dynamic> habitacion;
@@ -229,7 +230,7 @@ class _DetalleHabitacionScreenState extends State<DetalleHabitacionScreen> {
                                 Icon(Icons.reviews, size: 20),
                                 const SizedBox(width: 8),
                                 const Text(
-                                  'Reseñas y Comentarios',
+                                  'Agregar Reseña', 
                                   style: TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.bold,
