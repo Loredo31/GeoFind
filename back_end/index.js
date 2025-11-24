@@ -27,6 +27,7 @@ app.use('/api/reservar-cuarto', require('./app/routes/reservarCuartoRoutes'));
 app.use('/api/agendar-cita', require('./app/routes/agendarCitaRoutes'));
 app.use('/api/resena', require('./app/routes/reseñaRoutes'));
 app.use('/api/datos-cliente', require('./app/routes/datosClienteRoutes'));
+app.use('/api/proxy', require('./app/routes/portadaRoutes'));
 app.use('/api/proxy', require('./app/routes/proxyRoutes'));
 app.use('/api/proxy-image', require('./app/routes/proxyImageRoutes'));
 
