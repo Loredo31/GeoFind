@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:html' as html;
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import '../../models/usuario.dart';
 import '../../services/informacion_service.dart';
 import '../../widget/arrendador/custom_dropdown_field.dart';
@@ -72,11 +73,26 @@ class _RegistrarCuartoState extends State<RegistrarCuarto> {
             final reader = html.FileReader();
             final fileCompleter = Completer<void>();
 
-            reader.onLoadEnd.listen((e) {
+            reader.onLoadEnd.listen((e) async {
               if (reader.result != null) {
                 final String base64 = reader.result as String;
                 final String pureBase64 = base64.split(',').last;
-                nuevasImagenes.add(pureBase64);
+
+                // Verificar si la imagen ya existe antes de agregarla
+                print('🔍 Verificando imagen: ${file.name}');
+                final esDuplicada = await verificarImagen(pureBase64);
+
+                if (esDuplicada) {
+                  // Imagen duplicada - no agregar
+                  print('❌ Imagen rechazada: ${file.name}');
+                  _mostrarError(
+                    'La imagen "${file.name}" ya existe en el sistema. Por favor usa una imagen original.'
+                  );
+                } else {
+                  // Imagen original - agregar
+                  print('✅ Imagen aceptada: ${file.name}');
+                  nuevasImagenes.add(pureBase64);
+                }
               }
               fileCompleter.complete();
             });
@@ -85,11 +101,13 @@ class _RegistrarCuartoState extends State<RegistrarCuarto> {
             await fileCompleter.future;
           }
 
-          setState(() {
-            _fotografiasBase64.addAll(nuevasImagenes);
-          });
-
-          _mostrarMensaje('${nuevasImagenes.length} imagen(es) agregada(s)');
+          // Actualizar estado solo si hay nuevas imágenes válidas
+          if (nuevasImagenes.isNotEmpty) {
+            setState(() {
+              _fotografiasBase64.addAll(nuevasImagenes);
+            });
+            _mostrarMensaje('${nuevasImagenes.length} imagen(es) agregada(s)');
+          }
         }
 
         input.remove();
@@ -101,6 +119,49 @@ class _RegistrarCuartoState extends State<RegistrarCuarto> {
       await completer.future;
     } catch (error) {
       _mostrarError('Error al seleccionar imágenes: $error');
+    }
+  }
+
+  /// Verifica si una imagen ya existe en la base de datos
+  /// Retorna true si es duplicada, false si es original
+  Future<bool> verificarImagen(String base64) async {
+    try {
+      print('🔍 Enviando imagen al servidor para verificación...');
+      
+      final response = await http.post(
+        Uri.parse('http://localhost:3000/api/proxy-image/proxy-image'),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({'imageBase64': base64}),
+      );
+
+      print('📡 Respuesta del servidor: ${response.statusCode}');
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        
+        if (data['ok'] == true) {
+          final resultado = data['result'];
+          final esDuplicada = resultado['found'] == true;
+          
+          if (esDuplicada) {
+            final similitud = resultado['similarity'];
+            print('❌ Duplicado detectado: $similitud% de similitud');
+          } else {
+            print('✅ Imagen original verificada');
+          }
+          
+          return esDuplicada;
+        }
+      }
+
+      // Si hay error en el servidor, permitir la imagen por seguridad
+      print('⚠️ Error en servidor - permitiendo imagen');
+      return false;
+      
+    } catch (error) {
+      print('❌ Error al verificar: $error');
+      // En caso de error, permitir la imagen
+      return false;
     }
   }
 
