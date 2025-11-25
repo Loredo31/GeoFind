@@ -86,7 +86,7 @@ class _RegistrarCuartoState extends State<RegistrarCuarto> {
                   // Imagen duplicada - no agregar
                   print('❌ Imagen rechazada: ${file.name}');
                   _mostrarError(
-                    'La imagen "${file.name}" ya existe en el sistema. Por favor usa una imagen original.'
+                    'La imagen no es original y no se subirá. Por favor usa una imagen original.'
                   );
                 } else {
                   // Imagen original - agregar
@@ -129,7 +129,7 @@ class _RegistrarCuartoState extends State<RegistrarCuarto> {
       print('🔍 Enviando imagen al servidor para verificación...');
       
       final response = await http.post(
-        Uri.parse('http://localhost:3000/api/proxy-image/proxy-image'),
+        Uri.parse('http://localhost:3000/api/informacion/proxy-image'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({'imageBase64': base64}),
       );
@@ -139,8 +139,8 @@ class _RegistrarCuartoState extends State<RegistrarCuarto> {
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
         
-        if (data['ok'] == true) {
-          final resultado = data['result'];
+        if (data['success'] == true) {
+          final resultado = data['data'];
           final esDuplicada = resultado['found'] == true;
           
           if (esDuplicada) {

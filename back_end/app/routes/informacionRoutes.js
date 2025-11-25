@@ -12,5 +12,7 @@ router.get('/', InformacionController.obtenerTodasLasHabitaciones);
 router.put('/:id', InformacionController.actualizarInformacion);
 // eliminar
 router.delete('/:id', InformacionController.eliminarInformacion);
+// verificar si existe imagen similar
+router.post('/proxy-image', InformacionController.verificarImagenDuplicada);
 
 module.exports = router;
