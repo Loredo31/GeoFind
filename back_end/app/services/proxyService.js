@@ -388,10 +388,8 @@
 
 
 const NodeCache = require("node-cache");
-const sharp = require('sharp');
-const blockhash = require('blockhash-core');
-const Informacion = require('../models/InformacionModel');
 const ReseñaService = require("./reseñaService");
+const InformacionService = require("./informacionService");
 
 class ProxyService {
   constructor() {
@@ -482,117 +480,35 @@ class ProxyService {
     claves.forEach(clave => this.cache.del(clave));
   }
 
-  // =====================================================
-  // ==========   MÉTODOS DE PROCESO DE IMÁGENES   =======
-  // =====================================================
-
   /**
-   * Genera un hash perceptual de una imagen usando blockhash
-   */
-  async generarHash(imageBuffer) {
-    const resized = await sharp(imageBuffer).resize(256, 256).toBuffer();
-    const hash = blockhash.bmvbhash(resized, 16);
-    return hash;
-  }
-
-  /**
-   * Calcula la distancia Hamming entre dos hashes
-   */
-  async calcularDistanciaHamming(hash1, hash2) {
-    if (!hash1 || !hash2 || hash1.length !== hash2.length) {
-      return 100;
-    }
-
-    let distance = 0;
-    for (let i = 0; i < hash1.length; i++) {
-      if (hash1[i] !== hash2[i]) {
-        distance++;
-      }
-    }
-    return distance;
-  }
-
-  /**
-   * Calcula el porcentaje de similitud entre dos hashes
-   */
-  async calcularSimilitud(hash1, hash2) {
-    const distance = await this.calcularDistanciaHamming(hash1, hash2);
-    const maxDistance = hash1.length;
-    const similarity = ((maxDistance - distance) / maxDistance) * 100;
-    return similarity;
-  }
-
-  /**
-   * Verifica si una imagen ya existe en la BD comparando hashes
+   * PROXY VERIFICADOR DE IMÁGENES
    */
   async verificarImagenDuplicada(imageBase64) {
-    try {
-      console.log("📸 Iniciando verificación de imagen...");
-
-      const imageBuffer = Buffer.from(imageBase64, 'base64');
-      const newImageHash = await this.generarHash(imageBuffer);
-
-      const habitaciones = await Informacion.find({}, 'fotografias');
-
-      let imagenDuplicada = false;
-      let mejorCoincidencia = null;
-      let similitudMaxima = 0;
-      let imagenesComparadas = 0;
-
-      if (habitaciones.length === 0) {
-        return {
-          found: false,
-          similarity: 0,
-          message: "Primera imagen registrada",
-          hash: newImageHash
-        };
-      }
-
-      for (const habitacion of habitaciones) {
-        if (!habitacion.fotografias || habitacion.fotografias.length === 0) continue;
-
-        for (const fotoBase64 of habitacion.fotografias) {
-          try {
-            const fotoBuffer = Buffer.from(fotoBase64, 'base64');
-            const fotoHash = await this.generarHash(fotoBuffer);
-
-            const similitud = await this.calcularSimilitud(newImageHash, fotoHash);
-            imagenesComparadas++;
-
-            if (similitud >= 95 && similitud > similitudMaxima) {
-              imagenDuplicada = true;
-              similitudMaxima = similitud;
-              mejorCoincidencia = {
-                hash: fotoHash,
-                similitud: similitud.toFixed(2)
-              };
-            }
-          } catch (err) {
-            console.warn(`⚠️ Error al procesar imagen de BD: ${err.message}`);
-          }
-        }
-      }
-
-      if (imagenDuplicada) {
-        return {
-          found: true,
-          similarity: similitudMaxima.toFixed(2),
-          message: `Imagen duplicada con ${similitudMaxima.toFixed(2)}% de similitud`,
-          match: mejorCoincidencia
-        };
-      }
-
+    // Validación superficial antes de llamar al servicio real
+    if (typeof imageBase64 !== "string" || imageBase64.length < 50) {
       return {
         found: false,
-        similarity: imagenesComparadas > 0 ? similitudMaxima.toFixed(2) : 0,
-        message: "Imagen original - no hay duplicados",
-        hash: newImageHash
+        similarity: 0,
+        message: "Imagen demasiado pequeña o inválida",
       };
-
-    } catch (error) {
-      console.error(`❌ Error: ${error.message}`);
-      throw new Error(`Error al procesar imagen: ${error.message}`);
     }
+
+    // Clave hash parcial para cachear verificaciones repetidas
+    const cacheKey = `img_${imageBase64.substring(0, 60)}`;
+
+    // CONSULTA EN CACHE (Proxy)
+    const enCache = this.cache.get(cacheKey);
+    if (enCache !== undefined) {
+      return enCache;
+    }
+
+    // Delegación al servicio real (Proxy → Service)
+    const resultado = await InformacionService.verificarImagenDuplicada(imageBase64);
+
+    // Guardar en cache
+    this.cache.set(cacheKey, resultado, 180);
+
+    return resultado;
   }
 }
 
