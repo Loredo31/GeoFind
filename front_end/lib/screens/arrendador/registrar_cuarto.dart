@@ -122,8 +122,8 @@ class _RegistrarCuartoState extends State<RegistrarCuarto> {
     }
   }
 
-  /// Verifica si una imagen ya existe en la base de datos
-  /// Retorna true si es duplicada, false si es original
+  // Verifica si una imagen ya existe en la base de datos
+  // Retorna true si es duplicada, false si es original
   Future<bool> verificarImagen(String base64) async {
     try {
       print('🔍 Enviando imagen al servidor para verificación...');
@@ -145,7 +145,7 @@ class _RegistrarCuartoState extends State<RegistrarCuarto> {
           
           if (esDuplicada) {
             final similitud = resultado['similarity'];
-            print('❌ Duplicado detectado: $similitud% de similitud');
+            print('❌ Duplicado detectado');
           } else {
             print('✅ Imagen original verificada');
           }

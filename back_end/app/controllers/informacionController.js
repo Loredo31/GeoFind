@@ -1,4 +1,3 @@
-const InformacionService = require('../services/informacionService');
 const ProxyService = require('../services/proxyService');
 
 class InformacionController {
@@ -89,19 +88,21 @@ class InformacionController {
     }
   }
 
+  // ==========   MÉTODO DE PROCESAMIENTO DE IMÁGENES   ==========
+
   async verificarImagenDuplicada(req, res) {
     try {
       const { imageBase64 } = req.body;
       
+      // Validar que se reciba la imagen
       if (!imageBase64) {
         return res.status(400).json({ 
           success: false,
           message: 'La imagen es requerida' 
         });
       }
-      
-      console.log('📨 Solicitud recibida para verificar imagen');
-      
+            
+      // Usar proxy como intermediario
       const resultado = await ProxyService.verificarImagenDuplicada(imageBase64);
       
       return res.status(200).json({ 
@@ -110,7 +111,7 @@ class InformacionController {
       });
       
     } catch (error) {
-      console.error(`❌ Error en controlador: ${error.message}`);
+      console.error(`Error en controlador: ${error.message}`);
       return res.status(500).json({ 
         success: false,
         message: error.message 
