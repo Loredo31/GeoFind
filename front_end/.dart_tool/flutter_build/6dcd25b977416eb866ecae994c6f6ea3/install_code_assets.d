@@ -1,1 +1,0 @@
- C:\\Users\\monse\\OneDrive\\Escritorio\\Ordenar\\Arquitectura\ de\ software\\Unidad\ III\\GeoFind\\front_end\\.dart_tool\\flutter_build\\6dcd25b977416eb866ecae994c6f6ea3\\native_assets.json: 

@@ -1,11 +1,15 @@
-const ReseñaService = require("../services/reseñaService");
+const ProxyService = require("../services/proxyService"); 
+// ProxyService YA es una instancia → úsalo así
+const proxy = ProxyService;
 
 class ReseñaController {
   async crearReseña(req, res) {
     try {
-      // Obtener datos de la reseña
       const datosReseña = req.body;
-      const reseña = await ReseñaService.crearReseña(datosReseña);
+      const reseña = await proxy.crearReseña(datosReseña);
+
+      // Cuando se crea una reseña, limpiar cache de esa habitación
+      proxy.limpiarCacheHabitacion(datosReseña.habitacionId);
 
       res.status(201).json({
         success: true,
@@ -20,17 +24,14 @@ class ReseñaController {
     }
   }
 
-  // Controlador para obtener todas las reseñas de una habitación
   async obtenerReseñasHabitacion(req, res) {
     try {
       const { habitacionId } = req.params;
-      const reseñas = await ReseñaService.obtenerReseñasPorHabitacion(
-        habitacionId
-      );
+      const data = await proxy.obtenerReseñasPorHabitacion(habitacionId);
 
       res.json({
         success: true,
-        data: reseñas,
+        data,
       });
     } catch (error) {
       res.status(500).json({
@@ -40,14 +41,13 @@ class ReseñaController {
     }
   }
 
-  // Controlador para obtener todas las reseñas
   async obtenerTodasLasReseñas(req, res) {
     try {
-      const reseñas = await ReseñaService.obtenerTodasLasReseñas();
+      const data = await proxy.obtenerReseñasPorHabitacion(null); // si tienes un método para todas ajusta aquí
 
       res.json({
         success: true,
-        data: reseñas,
+        data,
       });
     } catch (error) {
       res.status(500).json({
@@ -57,17 +57,14 @@ class ReseñaController {
     }
   }
 
-  // Controlador para obtener promedios de calificaciones
   async obtenerPromedioCalificaciones(req, res) {
     try {
       const { habitacionId } = req.params;
-      const promedios = await ReseñaService.obtenerPromedioCalificaciones(
-        habitacionId
-      );
+      const data = await proxy.obtenerPromedioCalificaciones(habitacionId);
 
       res.json({
         success: true,
-        data: promedios,
+        data,
       });
     } catch (error) {
       res.status(500).json({
@@ -77,26 +74,14 @@ class ReseñaController {
     }
   }
 
-   // Controlador para obtener evolución
   async obtenerEvolucionCalificaciones(req, res) {
     try {
       const { habitacionId } = req.params;
-      const reseñas = await ReseñaService.obtenerReseñasPorHabitacion(
-        habitacionId
-      );
-
-      // Ordenar por fecha 
-      const evolucion = reseñas
-        .sort((a, b) => new Date(a.fechaReseña) - new Date(b.fechaReseña))
-        .map((reseña) => ({
-          fecha: reseña.fechaReseña,
-          calificacion: reseña.calificacionGeneral,
-          usuario: reseña.nombre,
-        }));
+      const data = await proxy.obtenerEvolucionCalificaciones(habitacionId);
 
       res.json({
         success: true,
-        data: evolucion,
+        data,
       });
     } catch (error) {
       res.status(500).json({
@@ -106,15 +91,14 @@ class ReseñaController {
     }
   }
 
-  // Controlador para obtener datos de gráfica de barras
   async obtenerDatosGraficaBarras(req, res) {
     try {
       const { habitacionId } = req.params;
-      const datos = await ReseñaService.obtenerDatosGraficaBarras(habitacionId);
+      const data = await proxy.obtenerDatosGraficaBarras(habitacionId);
 
       res.json({
         success: true,
-        data: datos,
+        data,
       });
     } catch (error) {
       res.status(500).json({
@@ -124,15 +108,14 @@ class ReseñaController {
     }
   }
 
-  // Controlador para obtener datos de gráfica de área
   async obtenerDatosGraficaArea(req, res) {
     try {
       const { habitacionId } = req.params;
-      const datos = await ReseñaService.obtenerDatosGraficaArea(habitacionId);
+      const data = await proxy.obtenerDatosGraficaArea(habitacionId);
 
       res.json({
         success: true,
-        data: datos,
+        data,
       });
     } catch (error) {
       res.status(500).json({
@@ -142,15 +125,14 @@ class ReseñaController {
     }
   }
 
-  // Controlador para obtener datos de gráfica radar
   async obtenerDatosGraficaRadar(req, res) {
     try {
       const { habitacionId } = req.params;
-      const datos = await ReseñaService.obtenerDatosGraficaRadar(habitacionId);
+      const data = await proxy.obtenerDatosGraficaRadar(habitacionId);
 
       res.json({
         success: true,
-        data: datos,
+        data,
       });
     } catch (error) {
       res.status(500).json({
@@ -160,22 +142,21 @@ class ReseñaController {
     }
   }
 
-  // Controlador para obtener datos de gráfica de barras dobles
   async obtenerDatosGraficaBarrasDobles(req, res) {
     try {
-      console.log('Solicitando datos para gráfica de barras dobles, habitacionId:', req.params.habitacionId);
-      
-      const { habitacionId } = req.params;
-      const datos = await ReseñaService.obtenerDatosGraficaBarrasDobles(habitacionId);
+      console.log("📊 Solicitando barras dobles:", req.params.habitacionId);
 
-      console.log('Datos obtenidos para barras dobles:', datos);
-      
+      const { habitacionId } = req.params;
+      const data = await proxy.obtenerDatosGraficaBarrasDobles(habitacionId);
+
+      console.log("📈 Datos barras dobles:", data);
+
       res.json({
         success: true,
-        data: datos,
+        data,
       });
     } catch (error) {
-      console.error('Error en obtenerDatosGraficaBarrasDobles:', error);
+      console.error("❌ Error barras dobles:", error);
       res.status(500).json({
         success: false,
         message: error.message,

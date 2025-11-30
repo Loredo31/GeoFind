@@ -146,7 +146,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class ResenaService {
-  static const String baseUrl = 'http://localhost:3000/api/resena'; // ✅ Cambiado a plural
+  static const String baseUrl = 'http://localhost:3000/api/resena';
 
   // Crear reseña
   static Future<Map<String, dynamic>> crearResena(Map<String, dynamic> datosResena) async {
