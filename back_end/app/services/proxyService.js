@@ -98,7 +98,7 @@ class ProxyService extends ServiceInterface{
 
     claves.forEach(clave => {
       this.cache.del(clave);
-      console.log("🧹 CACHE LIMPIADO →", clave);
+      console.log("CACHE LIMPIADO →", clave);
     });
   }
 
@@ -106,7 +106,7 @@ class ProxyService extends ServiceInterface{
    * PROXY VERIFICADOR DE IMÁGENES
    */
    async verificarImagenDuplicada(imageBase64) {
-  //   // Validación superficial antes de llamar al servicio real
+     // Validación superficial antes de llamar al servicio real
      if (typeof imageBase64 !== "string" || imageBase64.length < 50) {
        return {
          found: false,
