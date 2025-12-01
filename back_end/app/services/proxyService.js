@@ -484,28 +484,19 @@ class ProxyService {
    * PROXY VERIFICADOR DE IMÁGENES
    */
   async verificarImagenDuplicada(imageBase64) {
-    // Validación superficial antes de llamar al servicio real
     if (typeof imageBase64 !== "string" || imageBase64.length < 50) {
       return {
         found: false,
         similarity: 0,
-        message: "Imagen demasiado pequeña o inválida",
+        message: "Imagen demasiado pequeña",
       };
     }
 
-    // Clave hash parcial para cachear verificaciones repetidas
-    const cacheKey = `img_${imageBase64.substring(0, 60)}`;
+    const cacheKey = `img_${imageBase64.slice(0, 60)}`;
+    const cached = this.cache.get(cacheKey);
+    if (cached) return cached;
 
-    // CONSULTA EN CACHE (Proxy)
-    const enCache = this.cache.get(cacheKey);
-    if (enCache !== undefined) {
-      return enCache;
-    }
-
-    // Delegación al servicio real (Proxy → Service)
     const resultado = await InformacionService.verificarImagenDuplicada(imageBase64);
-
-    // Guardar en cache
     this.cache.set(cacheKey, resultado, 180);
 
     return resultado;
