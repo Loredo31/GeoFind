@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:html' as html;
 import 'package:flutter/material.dart';
-import 'package:front_end/widget/arrendatario/theme_selector.dart';
 import 'package:http/http.dart' as http;
 import '../../models/usuario.dart';
 import '../../services/informacion_service.dart';
@@ -35,7 +34,6 @@ class _RegistrarCuartoState extends State<RegistrarCuarto> {
 
   String? _tipoSeleccionado;
   String? _zonaSeleccionada;
-   String? _disenoSeleccionado = 'estandar';
   List<String> _serviciosSeleccionados = [];
   List<String> _fotografiasBase64 = [];
   bool _isLoading = false;
@@ -157,7 +155,7 @@ class _RegistrarCuartoState extends State<RegistrarCuarto> {
       }
 
       // Si hay error en el servidor, permitir la imagen por seguridad
-      print('⚠️ Error en servidor - permitiendo imagen');
+      print('⚠ Error en servidor - permitiendo imagen');
       return false;
       
     } catch (error) {
@@ -216,7 +214,6 @@ class _RegistrarCuartoState extends State<RegistrarCuarto> {
           'clabe': _clabeController.text.isEmpty ? null : _clabeController.text,
         },
         'arrendadorId': widget.usuario.id,
-        'diseño': _disenoSeleccionado,
       };
 
       print('Enviando datos al servidor...');
@@ -483,14 +480,6 @@ class _RegistrarCuartoState extends State<RegistrarCuarto> {
                               min: 6,
                               max: 12,
                             ),
-                          ),
-                          ThemeSelector(
-                            selectedTheme: _disenoSeleccionado,
-                            onThemeChanged: (value) {
-                              setState(() {
-                                _disenoSeleccionado = value;
-                              });
-                            },
                           ),
                         ],
                       ),
