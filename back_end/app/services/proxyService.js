@@ -17,21 +17,21 @@ class ProxyService extends ServiceInterface{
   // =====================================================
 
   async obtenerConCache(clave, obtenerDatosCallback, ttl = 300) {
-    console.log("\n🔍 BUSCANDO CLAVE EN CACHE:", clave);
+    console.log("\nBUSCANDO CLAVE EN CACHE:", clave);
 
     const datosCache = this.cache.get(clave);
 
     if (datosCache !== undefined) {
-      console.log("📦 CACHE HIT →", clave);
+      console.log("CACHE HIT →", clave);
       return datosCache;
     }
 
-    console.log("🐢 CACHE MISS → Petición REAL para:", clave);
+    console.log("CACHE MISS → Petición REAL para:", clave);
 
     const datos = await obtenerDatosCallback();
 
     this.cache.set(clave, datos, ttl);
-    console.log("💾 GUARDADO EN CACHE →", clave);
+    console.log("GUARDADO EN CACHE →", clave);
 
     return datos;
   }

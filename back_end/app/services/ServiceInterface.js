@@ -1,5 +1,5 @@
 class ServiceInterface {
-  // Declaración abstracta (no implementada)
+  
   async obtenerReseñasPorHabitacion(habitacionId) {
     throw new Error("Método no implementado");
   }
@@ -27,6 +27,11 @@ class ServiceInterface {
   async obtenerDatosGraficaRadar(habitacionId) {
     throw new Error("Método no implementado");
   }
+
+   async verificarImagenDuplicada(imageBase64){
+    throw new Error("Método no implementado");
+  }
 }
 
 module.exports = ServiceInterface;
+

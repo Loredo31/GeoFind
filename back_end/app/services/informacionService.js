@@ -1,8 +1,9 @@
 const Informacion = require('../models/InformacionModel');
 const sharp = require('sharp');
 const blockhash = require('blockhash-core');
+const ServiceInterface = require("./ServiceInterface");
 
-class InformacionService {
+class InformacionService extends ServiceInterface{
   async crearInformacion(datos) {
     try {
       // ✅ EXTRAER PRIMERA FOTO para fotoPortada
