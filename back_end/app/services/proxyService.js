@@ -1,10 +1,11 @@
 const NodeCache = require("node-cache");
 const ReseñaService = require("./reseñaService");
 const InformacionService = require("./informacionService");
+const ServiceInterface = require("./ServiceInterface");
 
-class ProxyService {
+class ProxyService extends ServiceInterface{
   constructor() {
-    // Configuración del sistema de caché
+    super();    // Configuración del sistema de caché
     this.cache = new NodeCache({
       stdTTL: 300,
       checkperiod: 60,

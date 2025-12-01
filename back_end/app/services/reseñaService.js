@@ -165,8 +165,9 @@
 
 const Reseña = require("../models/ReseñaModel");
 const ProxyService = require("./proxyService");
+const ServiceInterface = require("./ServiceInterface");
 
-class ReseñaService {
+class ReseñaService extends ServiceInterface{
 
   // Crear reseña
   async crearReseña(datosReseña) {
