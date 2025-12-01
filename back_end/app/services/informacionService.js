@@ -1,4 +1,6 @@
 const Informacion = require('../models/InformacionModel');
+const sharp = require('sharp');
+const blockhash = require('blockhash-core');
 
 class InformacionService {
   async crearInformacion(datos) {
