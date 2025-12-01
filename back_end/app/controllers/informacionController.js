@@ -1,4 +1,5 @@
 const ProxyService = require('../services/proxyService');
+const InformacionService = require('../services/informacionService');
 
 class InformacionController {
   async crearInformacion(req, res) {
